@@ -1,4 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using TodoLists.Server.DatabaseContexts;
+
 var builder = WebApplication.CreateBuilder(args);
+
+IConfigurationRoot config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+            .Build();
+
+string connectionString = config.GetConnectionString("Project") ?? "Error retrieving connection string!";
+
+builder.Services.AddDbContext<TodoListsContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
