@@ -6,5 +6,5 @@ public partial class TodoList
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<Todo> Todos { get; set; } = new List<Todo>();
+    public virtual ICollection<Todo> Todos { get; set; } = [];
 }

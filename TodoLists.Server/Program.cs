@@ -2,12 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using TodoLists.Server.DatabaseContexts;
 using TodoLists.Server.Entities;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 IConfigurationRoot config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
-            .Build();
+    .AddJsonFile("appsettings.json")
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .Build();
 
 string connectionString = config.GetConnectionString("Project") ?? "Error retrieving connection string!";
 
@@ -18,14 +18,13 @@ builder.Services.AddDbContext<TodoListsContext>(options => options.UseSqlServer(
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -54,8 +53,7 @@ app.MapGet("/weatherforecast", () =>
 
 app.MapGet("/", () => "Welcome to Todo Lists!");
 
-app.MapPost("/todolist", async (TodoListsContext context, DTO dto) =>
-{
+app.MapPost("/todolist", async (TodoListsContext context, DTO dto) => {
     TodoList todoList = new() {
         TodoListId = dto.TodoListId,
         Name = dto.Name,
@@ -64,8 +62,7 @@ app.MapPost("/todolist", async (TodoListsContext context, DTO dto) =>
     await context.SaveChangesAsync();
     return todoList;
 });
-app.MapPut("/todolist/{id:int}", async (TodoListsContext context, int id, DTO dto) =>
-{
+app.MapPut("/todolist/{id:int}", async (TodoListsContext context, int id, DTO dto) => {
     if ((await context.TodoLists.FindAsync(id)) is not TodoList entity) {
         return NotFound();
     }
@@ -75,8 +72,7 @@ app.MapPut("/todolist/{id:int}", async (TodoListsContext context, int id, DTO dt
     await context.SaveChangesAsync();
     return NoContent();
 });
-app.MapDelete("/todolist/{id:int}", async (TodoListsContext context, int id) =>
-{
+app.MapDelete("/todolist/{id:int}", async (TodoListsContext context, int id) => {
     if ((await context.TodoLists.Include(list => list.Todos).FindAsync(id)) is not TodoList todoList) {
         return NotFound();
     }
@@ -87,27 +83,20 @@ app.MapDelete("/todolist/{id:int}", async (TodoListsContext context, int id) =>
     await context.SaveChangesAsync();
     return NoContent();
 });
-app.MapGet("/todolist", async (TodoListsContext context) =>
-{
-    return context.TodoLists.OrderBy(list => list.Name).AsNoTracking();
-});
-app.MapGet("/todolist/{id:int}", async (TodoListsContext context, int id) =>
-{
-    if (context.TodoLists
+app.MapGet("/todolist", (TodoListsContext context) =>
+    context.TodoLists.OrderBy(list => list.Name).AsNoTracking().AsAsyncEnumerable());
+app.MapGet("/todolist/{id:int}", (TodoListsContext context, int id) =>
+    context.TodoLists
         .Include(list => list.Todos)
         .Where(list => list.TodoListId == id)
         .OrderBy(list => list.Name)
         .AsNoTracking()
         .AsAsyncEnumerable()
-        is IEnumerable<Todo> todoLists) {
-            
-        return todoLists;
-    }
-    return NotFound();
-});
+        is IEnumerable<Todo> todoLists
+        ? todoLists
+        : NotFound());
 
-app.MapPost("/todo", async (TodoListsContext context, DTO dto) =>
-{
+app.MapPost("/todo", async (TodoListsContext context, DTO dto) => {
     Todo todo = new() {
         TodoListId = dto.TodoListId,
         Description = dto.Description,
@@ -119,8 +108,7 @@ app.MapPost("/todo", async (TodoListsContext context, DTO dto) =>
     await context.SaveChangesAsync();
     return todo;
 });
-app.MapPut("/todo/{id:int}", async (TodoListsContext context, int id, DTO dto) =>
-{
+app.MapPut("/todo/{id:int}", async (TodoListsContext context, int id, DTO dto) => {
     if ((await context.Todos.FindAsync(id)) is not Todo entity) {
         return NotFound();
     }
@@ -139,8 +127,7 @@ app.MapPut("/todo/{id:int}", async (TodoListsContext context, int id, DTO dto) =
     await context.SaveChangesAsync();
     return NoContent();
 });
-app.MapDelete("/todo/{id:int}", async (TodoListsContext context, int id) =>
-{
+app.MapDelete("/todo/{id:int}", async (TodoListsContext context, int id) => {
     if ((await context.Todos.FindAsync(id)) is not Todo todo) {
         return NotFound();
     }
@@ -148,20 +135,16 @@ app.MapDelete("/todo/{id:int}", async (TodoListsContext context, int id) =>
     await context.SaveChangesAsync();
     return NoContent();
 });
-app.MapGet("/todolist/{id:int}/todo", async (TodoListsContext context, int id) =>
-{
-    if (context.Todos
+app.MapGet("/todolist/{id:int}/todo", (TodoListsContext context, int id) =>
+    context.Todos
         .Where(todo => todo.TodoListId == id)
         .OrderByDescending(todo => todo.DueDate)
         .ThenBy(todo => todo.Description)
         .AsNoTracking()
         .AsAsyncEnumerable()
-        is IEnumerable<Todo> todos) {
-        
-        return todos;
-    }
-    return NotFound();
-});
+        is IEnumerable<Todo> todos
+        ? todos
+        : NotFound());
 
 //app.MapFallbackToFile("/index.html");
 
