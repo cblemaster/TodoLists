@@ -9,8 +9,7 @@ public class CreateTodo
     public DateOnly? DueDate { get; set; }
     public bool IsImportant { get; set; }
     public bool IsComplete { get; set; }
-    public (bool IsValid, string ErrorMessage) Validate()
-    {
+    public (bool IsValid, string ErrorMessage) Validate() {
         bool isValid = false;
         StringBuilder errorMessage = new();
 

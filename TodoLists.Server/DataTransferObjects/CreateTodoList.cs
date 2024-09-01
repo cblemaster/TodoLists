@@ -6,8 +6,7 @@ public class CreateTodoList
 {
     public string Name { get; set; } = string.Empty;
 
-    public (bool IsValid, string ErrorMessage) Validate()
-    {
+    public (bool IsValid, string ErrorMessage) Validate() {
         bool isValid = false;
         StringBuilder errorMessage = new();
 

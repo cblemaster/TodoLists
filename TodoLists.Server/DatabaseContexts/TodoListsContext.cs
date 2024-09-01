@@ -16,10 +16,8 @@ public partial class TodoListsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Todo>(entity =>
-        {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<Todo>(entity => {
             entity.ToTable("Todo");
 
             entity.Property(e => e.Description)
@@ -32,8 +30,7 @@ public partial class TodoListsContext : DbContext
                 .HasConstraintName("FK_Todo_TodoList");
         });
 
-        modelBuilder.Entity<TodoList>(entity =>
-        {
+        modelBuilder.Entity<TodoList>(entity => {
             entity.ToTable("TodoList");
 
             entity.Property(e => e.Name)

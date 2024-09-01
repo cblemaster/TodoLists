@@ -82,7 +82,7 @@ app.MapPut("/todolist/{id:int}", async Task<Results<NotFound, BadRequest<string>
         }
         await context.SaveChangesAsync();
         return TypedResults.NoContent();
-});
+    });
 app.MapDelete("/todolist/{id:int}", async Task<Results<NotFound, BadRequest<string>, NoContent>>
     (TodoListsContext context, int id) => {
         if ((await context.TodoLists
@@ -97,7 +97,7 @@ app.MapDelete("/todolist/{id:int}", async Task<Results<NotFound, BadRequest<stri
         context.TodoLists.Remove(todoList);
         await context.SaveChangesAsync();
         return TypedResults.NoContent();
-});
+    });
 app.MapGet("/todolist", Ok<IEnumerable<GetTodoList>> (TodoListsContext context) => {
     List<GetTodoList> returnList = [];
     List<TodoList> lists = [.. context.TodoLists.OrderBy(list => list.Name).AsNoTracking()];
@@ -107,7 +107,9 @@ app.MapGet("/todolist", Ok<IEnumerable<GetTodoList>> (TodoListsContext context) 
 app.MapGet("/todolist/{id:int}", async Task<Results<NotFound, Ok<GetTodoList>>> (TodoListsContext context, int id) => {
     TodoList list = await context.TodoLists.Include(list => list.Todos).AsNoTracking()
         .SingleAsync(list => list.TodoListId == id);
-    return list is null ? TypedResults.NotFound() : TypedResults.Ok(new GetTodoList(list.TodoListId, list.Name, MapTodoEntityToDTO(list.Todos)));
+    return list is null
+        ? TypedResults.NotFound()
+        : TypedResults.Ok(new GetTodoList(list.TodoListId, list.Name, MapTodoEntityToDTO(list.Todos)));
 });
 
 app.MapPost("/todo", async Task<Results<BadRequest<string>, Ok<GetTodo>>> (TodoListsContext context, CreateTodo dto) => {
@@ -124,31 +126,33 @@ app.MapPost("/todo", async Task<Results<BadRequest<string>, Ok<GetTodo>>> (TodoL
     };
     context.Todos.Add(todo);
     await context.SaveChangesAsync();
-    return TypedResults.Ok(new GetTodo(todo.TodoId, todo.TodoListId, todo.Description, todo.DueDate, todo.IsImportant, todo.IsComplete));
+    return TypedResults.Ok(new GetTodo(todo.TodoId, todo.TodoListId, todo.Description, todo.DueDate,
+        todo.IsImportant, todo.IsComplete));
 });
-app.MapPut("/todo/{id:int}", async Task<Results<NotFound, BadRequest<string>, NoContent>> (TodoListsContext context, int id, UpdateTodo dto) => {
-    if ((await context.Todos.FindAsync(id)) is not Todo entity) {
-        return TypedResults.NotFound();
-    }
-    (bool IsValid, string ErrorMessage) = dto.Validate();
-    if (!IsValid) {
-        return TypedResults.BadRequest(ErrorMessage);
-    }
-    if (entity.Description != dto.Description) {
-        entity.Description = dto.Description;
-    }
-    if (entity.DueDate != dto.DueDate) {
-        entity.DueDate = dto.DueDate;
-    }
-    if (entity.IsImportant != dto.IsImportant) {
-        entity.IsImportant = dto.IsImportant;
-    }
-    if (entity.IsComplete != dto.IsComplete) {
-        entity.IsComplete = dto.IsComplete;
-    }
-    await context.SaveChangesAsync();
-    return TypedResults.NoContent();
-});
+app.MapPut("/todo/{id:int}", async Task<Results<NotFound, BadRequest<string>, NoContent>>
+    (TodoListsContext context, int id, UpdateTodo dto) => {
+        if ((await context.Todos.FindAsync(id)) is not Todo entity) {
+            return TypedResults.NotFound();
+        }
+        (bool IsValid, string ErrorMessage) = dto.Validate();
+        if (!IsValid) {
+            return TypedResults.BadRequest(ErrorMessage);
+        }
+        if (entity.Description != dto.Description) {
+            entity.Description = dto.Description;
+        }
+        if (entity.DueDate != dto.DueDate) {
+            entity.DueDate = dto.DueDate;
+        }
+        if (entity.IsImportant != dto.IsImportant) {
+            entity.IsImportant = dto.IsImportant;
+        }
+        if (entity.IsComplete != dto.IsComplete) {
+            entity.IsComplete = dto.IsComplete;
+        }
+        await context.SaveChangesAsync();
+        return TypedResults.NoContent();
+    });
 app.MapDelete("/todo/{id:int}", async Task<Results<NotFound, NoContent>> (TodoListsContext context, int id) => {
     if ((await context.Todos.FindAsync(id)) is not Todo todo) {
         return TypedResults.NotFound();
@@ -161,16 +165,18 @@ app.MapGet("/todo/{id:int}", Results<Ok<GetTodo>, NotFound> (TodoListsContext co
     context.Todos.AsNoTracking()
         .Single(todo => todo.TodoId == id)
         is Todo todo
-        ? TypedResults.Ok(new GetTodo(todo.TodoId, todo.TodoListId, todo.Description, todo.DueDate, todo.IsImportant, todo.IsComplete))
+        ? TypedResults.Ok(new GetTodo(todo.TodoId, todo.TodoListId, todo.Description, todo.DueDate,
+            todo.IsImportant, todo.IsComplete))
         : TypedResults.NotFound());
 
 IEnumerable<GetTodo> MapTodoEntityToDTO(ICollection<Todo> todos) {
     List<GetTodo> dtos = [];
-    todos.ToList().ForEach(todo => dtos.Add(new(todo.TodoId, todo.TodoListId, todo.Description, todo.DueDate, todo.IsImportant, todo.IsComplete)));
+    todos.ToList().ForEach(todo => dtos.Add(new(todo.TodoId, todo.TodoListId, todo.Description,
+        todo.DueDate, todo.IsImportant, todo.IsComplete)));
     return dtos.AsEnumerable();
 }
 
-//app.MapFallbackToFile("/index.html");
+app.MapFallbackToFile("/index.html");  // TODO >> Look into this file (it's in the client project)
 
 app.Run();
 
