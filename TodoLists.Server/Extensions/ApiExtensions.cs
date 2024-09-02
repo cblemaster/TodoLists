@@ -60,7 +60,8 @@ internal static class ApiExtensions
         .WithName("GetWeatherForecast")
         .WithOpenApi();
 
-        app.MapGet("/", () => "Welcome to Todo Lists!");
+        // TODO >> debug this endpoint
+        app.MapGet("/", () => "Welcome to Todo Lists!").WithName("Welcome").WithOpenApi();
 
         app.MapPost("/todolist", async Task<Results<BadRequest<string>, Ok<GetTodoList>>>
             (TodoListsContext context, CreateTodoList dto) => {
@@ -98,7 +99,7 @@ internal static class ApiExtensions
             (TodoListsContext context, int id) => {
                 if ((await context.TodoLists
                     .Include(list => list.Todos)
-                    .SingleAsync(list => list.TodoListId == id)
+                    .SingleOrDefaultAsync(list => list.TodoListId == id)
                     is not TodoList todoList)) {
                     return TypedResults.NotFound();
                 }
@@ -120,8 +121,8 @@ internal static class ApiExtensions
             .WithName("GetTodoList")
             .WithOpenApi();
         app.MapGet("/todolist/{id:int}", async Task<Results<NotFound, Ok<GetTodoList>>> (TodoListsContext context, int id) => {
-            TodoList list = await context.TodoLists.Include(list => list.Todos).AsNoTracking()
-                .SingleAsync(list => list.TodoListId == id);
+            TodoList list = (await context.TodoLists.Include(list => list.Todos).AsNoTracking()
+                .SingleOrDefaultAsync(list => list.TodoListId == id))!;
             return list is null
                 ? TypedResults.NotFound()
                 : TypedResults.Ok(new GetTodoList(list.TodoListId, list.Name, MapTodoEntityToDTO(list.Todos)));
@@ -183,9 +184,9 @@ internal static class ApiExtensions
         })
             .WithName("DeleteTodo")
             .WithOpenApi();
-        app.MapGet("/todo/{id:int}", Results<Ok<GetTodo>, NotFound> (TodoListsContext context, int id) => {
-            return context.Todos.AsNoTracking()
-                .Single(todo => todo.TodoId == id)
+        app.MapGet("/todo/{id:int}",async Task<Results<Ok<GetTodo>, NotFound>> (TodoListsContext context, int id) => {
+            return await context.Todos.AsNoTracking()
+                .SingleOrDefaultAsync(todo => todo.TodoId == id)
                 is Todo todo
                 ? TypedResults.Ok(new GetTodo(todo.TodoId, todo.TodoListId, todo.Description, todo.DueDate,
                     todo.IsImportant, todo.IsComplete))
