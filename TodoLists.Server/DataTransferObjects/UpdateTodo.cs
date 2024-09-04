@@ -6,7 +6,7 @@ public class UpdateTodo
 {
     public int TodoId { get; set; }
     public string Description { get; set; } = string.Empty;
-    public DateTime? DueDate { get; set; }
+    public DateOnly? DueDate { get; set; }
     public bool IsImportant { get; set; }
     public bool IsComplete { get; set; }
 
