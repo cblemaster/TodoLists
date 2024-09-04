@@ -23,6 +23,7 @@ public partial class TodoListsContext : DbContext
             entity.Property(e => e.Description)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+            entity.Property(e => e.DueDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.TodoList).WithMany(p => p.Todos)
                 .HasForeignKey(d => d.TodoListId)
