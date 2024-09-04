@@ -7,7 +7,7 @@ WebApplication app =
     builder.Build()
         .ConfigureWebApplication()
         .MapApiEndpoints();
-app.MapFallbackToFile("/index.html");  // TODO >> Look into this file (it's in the client project)
+app.MapFallbackToFile("/index.html");
 app.Run();
 internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

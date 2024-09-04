@@ -59,9 +59,6 @@ internal static class ApiExtensions
         .WithName("GetWeatherForecast")
         .WithOpenApi();
 
-        // TODO >> debug this endpoint
-        app.MapGet("/", () => "Welcome to Todo Lists!").WithName("Welcome").WithOpenApi();
-
         app.MapPost("/todolist", async Task<Results<BadRequest<string>, Ok<GetTodoList>>>
             (TodoListsContext context, CreateTodoList dto) => {
                 (bool IsValid, string ErrorMessage) = dto.Validate();
