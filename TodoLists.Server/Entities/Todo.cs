@@ -8,7 +8,7 @@ public partial class Todo
 
     public string Description { get; set; } = null!;
 
-    public DateTime? DueDate { get; set; }  //TODO >> using datetime when I would really prefer dateonly; however nullable dateonly does not serialize to/deserialize from json, workarounds (converters) exist but I couldn't get any workarounds to...work
+    public DateOnly? DueDate { get; set; }
 
     public bool IsImportant { get; set; }
 
