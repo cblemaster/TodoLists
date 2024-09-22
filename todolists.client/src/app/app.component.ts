@@ -1,11 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
+interface TodoList {
+  todoListId: number;
+  name: string;
+  todos: Todo[];
+}
+
+interface Todo {
+  todoId: number;
+  todoListId: number;
+  description: string;
+  dueDate: string;
+  isImportant: boolean;
+  isComplete: boolean;
 }
 
 @Component({
@@ -14,18 +22,19 @@ interface WeatherForecast {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  public todoLists: TodoList[] = [];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.getForecasts();
-  }
+    //this.getForecasts();
+    this.getTodoLists();
+    }
 
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
+  getTodoLists() {
+    this.http.get<TodoList[]>('/todolist').subscribe(
       (result) => {
-        this.forecasts = result;
+        this.todoLists = result;
       },
       (error) => {
         console.error(error);
@@ -33,5 +42,5 @@ export class AppComponent implements OnInit {
     );
   }
 
-  title = 'todolists.client';
+  title = 'Todo Lists';
 }
