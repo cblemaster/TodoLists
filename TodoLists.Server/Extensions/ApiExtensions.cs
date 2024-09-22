@@ -55,7 +55,6 @@ internal static class ApiExtensions
                 await context.SaveChangesAsync();
                 return TypedResults.Ok(new GetTodoList(todoList.TodoListId, todoList.Name, []));
             })
-            .WithName("CreateTodoList")
             .WithOpenApi(); ;
         app.MapPut("/todolist/{id:int}", async Task<Results<NotFound, BadRequest<string>,
             NoContent>> (TodoListsContext context, int id, UpdateTodoList dto) => {
@@ -72,7 +71,6 @@ internal static class ApiExtensions
                 await context.SaveChangesAsync();
                 return TypedResults.NoContent();
             })
-            .WithName("UpdateTodoList")
             .WithOpenApi();
         app.MapDelete("/todolist/{id:int}", async Task<Results<NotFound, BadRequest<string>, NoContent>>
             (TodoListsContext context, int id) => {
@@ -89,7 +87,6 @@ internal static class ApiExtensions
                 await context.SaveChangesAsync();
                 return TypedResults.NoContent();
             })
-            .WithName("DeleteTodoList")
             .WithOpenApi();
         app.MapGet("/todolist", Ok<IEnumerable<GetTodoList>> (TodoListsContext context) => {
             List<GetTodoList> returnList = [];
@@ -97,7 +94,6 @@ internal static class ApiExtensions
             lists.ForEach(list => returnList.Add(new(list.TodoListId, list.Name, [])));
             return TypedResults.Ok(returnList.AsEnumerable());
         })
-            .WithName("GetTodoList")
             .WithOpenApi();
         app.MapGet("/todolist/{id:int}", async Task<Results<NotFound, Ok<GetTodoList>>> (TodoListsContext context, int id) => {
             TodoList list = (await context.TodoLists.Include(list => list.Todos).AsNoTracking()
@@ -106,7 +102,6 @@ internal static class ApiExtensions
                 ? TypedResults.NotFound()
                 : TypedResults.Ok(new GetTodoList(list.TodoListId, list.Name, MapTodoEntityToDTO(list.Todos)));
         })
-        .WithName("GetTodoLists")
         .WithOpenApi();
         app.MapPost("/todo", async Task<Results<BadRequest<string>, Ok<GetTodo>>> (TodoListsContext context, CreateTodo dto) => {
             (bool IsValid, string ErrorMessage) = dto.Validate();
@@ -125,7 +120,6 @@ internal static class ApiExtensions
             return TypedResults.Ok(new GetTodo(todo.TodoId, todo.TodoListId, todo.Description, todo.DueDate,
                 todo.IsImportant, todo.IsComplete));
         })
-        .WithName("CreateTodo")
         .WithOpenApi();
         app.MapPut("/todo/{id:int}", async Task<Results<NotFound, BadRequest<string>, NoContent>>
             (TodoListsContext context, int id, UpdateTodo dto) => {
@@ -151,7 +145,6 @@ internal static class ApiExtensions
                 await context.SaveChangesAsync();
                 return TypedResults.NoContent();
             })
-            .WithName("UpdateTodo")
             .WithOpenApi();
         app.MapDelete("/todo/{id:int}", async Task<Results<NotFound, NoContent>> (TodoListsContext context, int id) => {
             if ((await context.Todos.FindAsync(id)) is not Todo todo) {
@@ -161,7 +154,6 @@ internal static class ApiExtensions
             await context.SaveChangesAsync();
             return TypedResults.NoContent();
         })
-        .WithName("DeleteTodo")
         .WithOpenApi();
         app.MapGet("/todo/{id:int}", async Task<Results<Ok<GetTodo>, NotFound>> (TodoListsContext context, int id) =>
             await context.Todos.AsNoTracking()
@@ -170,7 +162,6 @@ internal static class ApiExtensions
                 ? TypedResults.Ok(new GetTodo(todo.TodoId, todo.TodoListId, todo.Description, todo.DueDate,
                     todo.IsImportant, todo.IsComplete))
                 : TypedResults.NotFound())
-        .WithName("GetTodo")
         .WithOpenApi();
         return app;
     }
