@@ -2,15 +2,8 @@
 
 <p *ngIf="!todoLists"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
 
-<table *ngIf="todoLists">
-  <thead>
-    <tr>
-      <th>Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let list of todoLists">
-      <td>{{ list.name }}</td>
-    </tr>
-  </tbody>
-</table>
+<div style="margin: auto; width: 50%;">
+  <select style="width: 45%;">
+    <option *ngFor="let list of todoLists">{{ list.name }}</option>
+  </select>
+</div>
