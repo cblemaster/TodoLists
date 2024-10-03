@@ -1,20 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
-interface TodoList {
-  todoListId: number;
-  name: string;
-  todos: Todo[];
-}
-
-interface Todo {
-  todoId: number;
-  todoListId: number;
-  description: string;
-  dueDate: string;
-  isImportant: boolean;
-  isComplete: boolean;
-}
+import { TodoList } from '../shared/models/todoList';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +13,6 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    //this.getForecasts();
     this.getTodoLists();
     }
 
