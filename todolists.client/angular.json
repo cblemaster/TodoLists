@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "todolists.client:build:production"
+              "buildTarget": "todolists.client:build:production"
             },
             "development": {
-              "browserTarget": "todolists.client:build:development"
+              "buildTarget": "todolists.client:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -74,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "todolists.client:build"
+            "buildTarget": "todolists.client:build"
           }
         },
         "test": {
