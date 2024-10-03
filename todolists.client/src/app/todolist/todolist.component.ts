@@ -18,11 +18,13 @@ export class TodolistComponent implements OnInit {
 
   getTodoLists() {
     this.http.get<TodoList[]>('/todolist').subscribe(
-      (result) => {
-        this.todoLists = result;
-      },
-      (error) => {
-        console.error(error);
+      {
+        next: (result) => {
+          this.todoLists = result;
+        },
+      error: (error) => {
+      console.error(error);
+    }
       }
     );
   }
