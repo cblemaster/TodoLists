@@ -39,3 +39,14 @@ CREATE TABLE Todo (
 	CONSTRAINT FK_Todo_TodoList FOREIGN KEY(TodoListId) REFERENCES TodoList(TodoListId),
 )
 GO
+
+---- optional sample data
+--INSERT INTO TodoList([Name]) VALUES('List One');
+--INSERT INTO TodoList([Name]) VALUES('List Two');
+--INSERT INTO TodoList([Name]) VALUES('List Three');
+--INSERT INTO TodoList([Name]) VALUES('List A');
+--INSERT INTO TodoList([Name]) VALUES('List B');
+--INSERT INTO TodoList([Name]) VALUES('List C');
+--INSERT INTO TodoList([Name]) VALUES('List 1');
+--INSERT INTO TodoList([Name]) VALUES('List 2');
+--INSERT INTO TodoList([Name]) VALUES('List 3');
