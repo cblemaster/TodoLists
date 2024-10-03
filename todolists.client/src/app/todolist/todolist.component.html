@@ -1,12 +1,39 @@
 <h1 id="tableLabel">Todo Lists</h1>
 
 <p *ngIf="!todoLists"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+<p *ngIf="!selectedTodoList"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
 
 <div style="margin: auto; width: 50%;">
   <select style="width: 45%;">
     <option *ngFor="let list of todoLists">{{ list.name }}</option>
   </select>
 </div>
-<div style="margin: auto; width: 50%;">
-  <input type="submit" />
+
+<div>
+  <p><a href="">Create new to do list</a></p>
+</div>
+
+<div>
+  <h2>{{ selectedTodoList.name }}</h2>
+</div>
+
+<div style="margin: auto;">
+  <ul>
+    <li *ngFor="let todo of selectedTodoList.todos">
+      <div class="card" style="width: 60%;">
+        <p>Todo id: {{ todo.todoId }}</p>
+        <p>{{ todo.description}}</p>
+        <p>Due date: {{ todo.dueDate }}</p>
+        <p>Important?: {{ todo.isImportant }}</p>
+        <p>Complete?: {{ todo.isComplete }}</p>
+        <p><a href="">Details for {{ todo.description}}</a></p>
+        <p><a href="">Update {{ todo.description}}</a></p>
+        <p><a href="">Delete {{ todo.description}}</a></p>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div>
+  <p><a href="">Create new to do in list {{ selectedTodoList.name }}</a></p>
 </div>

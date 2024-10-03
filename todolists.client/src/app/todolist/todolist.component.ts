@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { TodoList } from 'src/shared/models/todoList'
+import { Todo } from '../../shared/models/todo';
 
 @Component({
   selector: 'app-todolist',
@@ -9,11 +10,13 @@ import { TodoList } from 'src/shared/models/todoList'
 })
 export class TodolistComponent implements OnInit {
   public todoLists: TodoList[] = [];
+  public selectedTodoList!: TodoList;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.getTodoLists();
+    this.getSelectedTodoList(5);
   }
 
   getTodoLists() {
@@ -25,6 +28,19 @@ export class TodolistComponent implements OnInit {
       error: (error) => {
       console.error(error);
     }
+      }
+    );
+  }
+
+  getSelectedTodoList(id: number) {
+    this.http.get<TodoList>('/todolist/' + id).subscribe(
+      {
+        next: (result) => {
+          this.selectedTodoList = result;
+        },
+        error: (error) => {
+          console.error(error);
+        }
       }
     );
   }
