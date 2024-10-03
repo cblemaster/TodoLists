@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -12,22 +12,16 @@ import { UpdatetodoComponent } from './updatetodo/updatetodo.component';
 import { TodoComponent } from './todo/todo.component';
 import { DeletetodoComponent } from './deletetodo/deletetodo.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    TodolistComponent,
-    CreatetodolistComponent,
-    RenametodolistComponent,
-    DeletetodolistComponent,
-    CreatetodoComponent,
-    UpdatetodoComponent,
-    TodoComponent,
-    DeletetodoComponent
-  ],
-  imports: [
-    BrowserModule, HttpClientModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        TodolistComponent,
+        CreatetodolistComponent,
+        RenametodolistComponent,
+        DeletetodolistComponent,
+        CreatetodoComponent,
+        UpdatetodoComponent,
+        TodoComponent,
+        DeletetodoComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
