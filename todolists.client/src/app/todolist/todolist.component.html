@@ -3,7 +3,7 @@
 
 <div class="header">
   <h2>{{ title }}</h2>
-  <h3>{{ selectedTodoList.name }}</h3>
+  <h3 *ngIf="selectedTodoList">{{ selectedTodoList.name }}</h3>
   <table class="headertable">
     <tbody>
       <tr>
@@ -17,15 +17,16 @@
 
 <div class="row">
   <div class="column side">
-    <ul class="listselector">
+    <ul class="listselector" *ngIf="todoLists">
       <li class="listselection" *ngFor="let list of todoLists">
         <a href="">{{ list.name }}</a>
       </li>
       <li><a href="">Create new to do list</a></li>
     </ul>
   </div>
+
   <div class="column middle">
-    <table>
+    <table *ngIf="selectedTodoList">
       <thead>
         <tr>
           <th>Todo id</th>
