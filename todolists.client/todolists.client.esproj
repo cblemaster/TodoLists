@@ -8,6 +8,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\todolists.client\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\shared\pipes\" />
     <Folder Include="src\shared\validators\" />
   </ItemGroup>
 </Project>

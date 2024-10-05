@@ -11,6 +11,7 @@ import { CreatetodoComponent } from './createtodo/createtodo.component';
 import { UpdatetodoComponent } from './updatetodo/updatetodo.component';
 import { TodoComponent } from './todo/todo.component';
 import { DeletetodoComponent } from './deletetodo/deletetodo.component';
+import { BoolYesNoPipe } from '../shared/pipes/bool-yes-no.pipe';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -21,7 +22,8 @@ import { DeletetodoComponent } from './deletetodo/deletetodo.component';
         CreatetodoComponent,
         UpdatetodoComponent,
         TodoComponent,
-        DeletetodoComponent
+        DeletetodoComponent,
+        BoolYesNoPipe,
     ],
     bootstrap: [AppComponent], imports: [BrowserModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
