@@ -1,6 +1,3 @@
-<p *ngIf="!todoLists"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-<p *ngIf="!selectedTodoList"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-
 <div class="header">
   <h2>{{ title }}</h2>
   <h3 *ngIf="selectedTodoList">{{ selectedTodoList.name }}</h3>
@@ -25,8 +22,8 @@
     </ul>
   </div>
 
-  <div class="column middle">
-    <table *ngIf="selectedTodoList">
+  <div class="column right">
+    <table *ngIf="selectedTodoList" class="bodytable">
       <thead>
         <tr>
           <th>Todo id</th>
@@ -34,16 +31,17 @@
           <th>Due date</th>
           <th>Important?</th>
           <th>Complete?</th>
-          <th colspan="2">Actions</th>
+          <th colspan="3">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let todo of selectedTodoList.todos">
+        <tr *ngFor="let todo of selectedTodoList.todos; let i = index" [ngClass]="{'even-row': i % 2 === 0, 'odd-row': i % 2 !== 0}">
           <td>{{ todo.todoId }}</td>
           <td>{{ todo.description}}</td>
           <td>{{ todo.dueDate | date:'fullDate' }}</td>
           <td>{{ todo.isImportant | boolYesNo }}</td>
           <td>{{ todo.isComplete | boolYesNo }}</td>
+          <td><a href="">Mark complete/incomplete</a></td>
           <td><a href="">Update</a></td>
           <td><a href="">Delete</a></td>
         </tr>
