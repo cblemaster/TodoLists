@@ -34,7 +34,7 @@
           <th>Due date</th>
           <th>Important?</th>
           <th>Complete?</th>
-          <th colspan="3">Actions</th>
+          <th colspan="2">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -42,9 +42,8 @@
           <td>{{ todo.todoId }}</td>
           <td>{{ todo.description}}</td>
           <td>{{ todo.dueDate | date:'fullDate' }}</td>
-          <td>{{ todo.isImportant }}</td>
-          <td>{{ todo.isComplete }}</td>
-          <td><a href="">Details</a></td>
+          <td>{{ todo.isImportant | boolYesNo }}</td>
+          <td>{{ todo.isComplete | boolYesNo }}</td>
           <td><a href="">Update</a></td>
           <td><a href="">Delete</a></td>
         </tr>
