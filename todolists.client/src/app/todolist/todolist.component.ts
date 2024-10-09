@@ -14,9 +14,13 @@ export class TodolistComponent implements OnInit {
 
   constructor(private http: HttpClient) { }
 
+  title = 'Todo Lists';
+
   ngOnInit() {
     this.getTodoLists();
-    this.getSelectedTodoList(5);
+
+    this.getSelectedTodoList(Math.min(...this.todoLists.map(item => item.todoListId)));
+    //const minTodoListId = Math.min(...this.todoLists.map(item => item.todoListId));
   }
 
   getTodoLists() {
@@ -44,6 +48,4 @@ export class TodolistComponent implements OnInit {
       }
     );
   }
-
-  title = 'Todo Lists';
 }

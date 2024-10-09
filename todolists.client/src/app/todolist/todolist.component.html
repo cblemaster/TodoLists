@@ -16,7 +16,7 @@
   <div class="column side">
     <ul class="listselector" *ngIf="todoLists">
       <li class="listselection" *ngFor="let list of todoLists">
-        <a href="">{{ list.name }}</a>
+        <button (click)="getSelectedTodoList(list.todoListId)">{{ list.name }}</button>
       </li>
       <li><a href="">Create new to do list</a></li>
     </ul>
