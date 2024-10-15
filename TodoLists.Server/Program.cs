@@ -1,5 +1,13 @@
 var builder = WebApplication.CreateBuilder(args);
 
+IConfigurationRoot config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .Build();
+
+string connectionString = config.GetConnectionString("Project") ??
+            "Error retrieving connection string!";
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
