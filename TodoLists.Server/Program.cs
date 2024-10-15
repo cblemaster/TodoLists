@@ -24,8 +24,7 @@ app.UseDefaultFiles().UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger().UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -96,6 +95,11 @@ app.MapGet("/todo/{id:int}", async Task<Results<Ok<GetTodo>, NotFound>> (TodoLis
 app.MapPut("/todolist/{id:int}", async Task<Results<NotFound, BadRequest<string>,
     NoContent>> (TodoListsContext context, int id, UpdateTodoList dto) =>
 {
+    if (dto.TodoListId != id)
+    {
+        return TypedResults.BadRequest("Id mismatch.");
+    }
+    
     if ((await context.TodoLists.FindAsync(id)) is not TodoList entity)
     {
         return TypedResults.NotFound();
@@ -116,6 +120,11 @@ app.MapPut("/todolist/{id:int}", async Task<Results<NotFound, BadRequest<string>
 app.MapPut("/todo/{id:int}", async Task<Results<NotFound, BadRequest<string>, NoContent>>
     (TodoListsContext context, int id, UpdateTodo dto) =>
 {
+    if (dto.TodoId != id)
+    {
+        return TypedResults.BadRequest("Id mismatch.");
+    }
+
     if ((await context.Todos.FindAsync(id)) is not Todo entity)
     {
         return TypedResults.NotFound();
@@ -124,6 +133,10 @@ app.MapPut("/todo/{id:int}", async Task<Results<NotFound, BadRequest<string>, No
     if (!IsValid)
     {
         return TypedResults.BadRequest(ErrorMessage);
+    }
+    if (entity.TodoListId != dto.TodoListId)
+    {
+        entity.TodoListId = dto.TodoListId;
     }
     if (entity.Description != dto.Description)
     {
