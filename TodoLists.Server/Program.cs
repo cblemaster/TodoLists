@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using TodoLists.Server;
+using TodoLists.Server.DataContext;
 using TodoLists.Server.DataTransferObjects;
+using TodoLists.Server.Entities;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,6 @@ IConfigurationRoot config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
                 .Build();
-
 string connectionString = config.GetConnectionString("Project") ?? "Error retrieving connection string!";
 
 builder.Services
@@ -17,18 +17,16 @@ builder.Services
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();
-
 WebApplication app = builder.Build();
 
 app.UseDefaultFiles().UseStaticFiles();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger().UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
+#region Endpoints
 app.MapPost("/todolist", async Task<Results<BadRequest<string>, Ok<GetTodoList>>>
             (TodoListsContext context, CreateTodoList dto) =>
 {
@@ -188,9 +186,9 @@ app.MapDelete("/todo/{id:int}", async Task<Results<NotFound, NoContent>> (TodoLi
     return TypedResults.NoContent();
 })
 .WithOpenApi();
+#endregion Endpoints
 
 app.MapFallbackToFile("/index.html");
-
 app.Run();
 
 static IEnumerable<GetTodo> MapTodoEntityToDTO(ICollection<Todo> todos)

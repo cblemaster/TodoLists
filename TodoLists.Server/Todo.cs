@@ -1,4 +1,4 @@
-﻿namespace TodoLists.Server;
+﻿namespace TodoLists.Server.Entities;
 
 public partial class Todo
 {
