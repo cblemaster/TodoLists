@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BoolYesNoPipe } from './pipes/bool-yes-no.pipe';
-import { Todo } from './models/todo';
-import { TodoList } from './models/todo-list';
+import { ConfirmDialog } from './dialogs/confirm/confirm-dialog';
+import { ErrorDialog } from './dialogs/error/error-dialog';
 
-@NgModule({ declarations: [BoolYesNoPipe, Todo, TodoList], imports: [CommonModule] })
+@NgModule({ declarations: [BoolYesNoPipe ], imports: [CommonModule] })
 
 export class SharedModule { }
