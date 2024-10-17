@@ -4,6 +4,6 @@ import { BoolYesNoPipe } from './pipes/bool-yes-no.pipe';
 import { ConfirmDialog } from './dialogs/confirm/confirm-dialog';
 import { ErrorDialog } from './dialogs/error/error-dialog';
 
-@NgModule({ declarations: [BoolYesNoPipe ], imports: [CommonModule] })
+@NgModule({ declarations: [BoolYesNoPipe ], imports: [CommonModule, ConfirmDialog, ErrorDialog] })
 
 export class SharedModule { }
