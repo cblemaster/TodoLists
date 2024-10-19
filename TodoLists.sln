@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoLists.Server", "TodoLists.Server\TodoLists.Server.csproj", "{6079DBD8-AB99-48B4-9AF1-C8B30E6554E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoLists.Server", "TodoLists.Server\TodoLists.Server.csproj", "{6079DBD8-AB99-48B4-9AF1-C8B30E6554E4}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "todolists.client", "todolists.client\todolists.client.esproj", "{FFE6B13C-EDB7-41CD-939E-356EC102F747}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6B6C89A9-C5C4-467B-A91F-BE90241E17E4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

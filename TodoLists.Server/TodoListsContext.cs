@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodoLists.Server.Entities;
 
-namespace TodoLists.Server.DataContext;
+namespace TodoLists.Server;
 
 public partial class TodoListsContext : DbContext
 {

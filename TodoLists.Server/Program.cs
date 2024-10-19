@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using TodoLists.Server.DataContext;
+using TodoLists.Server;
 using TodoLists.Server.DataTransferObjects;
-using TodoLists.Server.Entities;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
