@@ -1,7 +1,7 @@
 import { Todo } from "./todo";
 
 export class TodoList {
-    public todoListId : number | undefined;
-    public name : string | undefined;
+    public todoListId : number= 0;
+    public name : string = '';
     public todos : Todo[] = [];
 }

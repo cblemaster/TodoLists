@@ -1,8 +1,12 @@
+import { DatePipe } from "@angular/common";
+
 export class Todo {
-    todoId : number | undefined;
-	todoListId : number | undefined;
-	description : string | undefined;
-	dueDate : Date | undefined;
-	isImportant : Boolean | undefined;
-	isComplete : Boolean | undefined;
+    constructor(private datePipe : DatePipe) {}
+	
+	todoId : number = 0;
+	todoListId : number = 0;
+	description : string = '';
+	dueDate : Date = new Date();
+	isImportant : Boolean = false;
+	isComplete : Boolean = false;
 }
