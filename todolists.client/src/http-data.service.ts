@@ -20,23 +20,23 @@ export class HttpDataService {
   public listList(): Observable<TodoList[]> {
     return this.httpClient.get<TodoList[]>('/todolist');
   }
-  public deleteList(id: number) { 
-    return this.httpClient.delete(`todolist/${id}`);
-  }
   public updateList(todoList: TodoList): Observable<TodoList> {
     return this.httpClient.put<TodoList>(`todolist/${todoList.todoListId}`, todoList);
   }
-
+  public deleteList(id: number) { 
+    return this.httpClient.delete(`todolist/${id}`);
+  }
+  
   public createTodo(todo: Todo): Observable<Todo> {
     return this.httpClient.post<Todo>('/todo', todo);
   }
   public readTodo(id: number): Observable<Todo> {
     return this.httpClient.get<Todo>(`todo/${id}`);
   }
-  public deleteTodo(id: number) { 
-    return this.httpClient.delete(`todo/${id}`);
-  }
   public updateTodo(todo: Todo): Observable<Todo> {
     return this.httpClient.put<Todo>(`todo/${todo.todoId}`, todo);
+  }
+  public deleteTodo(id: number) { 
+    return this.httpClient.delete(`todo/${id}`);
   }
 }
