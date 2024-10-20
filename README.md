@@ -8,6 +8,7 @@
 - Visual Studio Code 1.94.2
 - NET 8 / C# 12
 - SQL server database
+- Thanks to https://www.w3schools.com/ for the slick free css layout
 
 - Entity Framework Core 8
 - ASP.NET Core
