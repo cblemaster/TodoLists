@@ -1,0 +1,5 @@
+<div>
+  <h2 *ngIf="!selectedList">Select a list to get started, or create a new list!</h2>
+  <h2 *ngIf="selectedList">{{ selectedList.name }}</h2>
+  <p *ngIf="selectedList">Rename list | Delete list | Create to do</p>
+</div>
