@@ -1,7 +1,11 @@
 <div>
     <ul *ngIf="todoLists">
         <li *ngFor="let item of todoLists">
-            <p>{{ item.name}}</p>
+            <button (click)="selectList()">{{ item.name}}</button>
         </li>
     </ul>
+</div>
+
+<div>
+    <a href="">Create new list</a>
 </div>
