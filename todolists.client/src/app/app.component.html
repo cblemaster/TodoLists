@@ -1,10 +1,47 @@
-﻿<div class="header">
-  <app-selected-list></app-selected-list>
+<div class="header">
+  <h2 *ngIf="!selectedTodoList">Select a list to get started, or create a new list!</h2>
+  <h2 *ngIf="selectedTodoList">{{ selectedTodoList.name }}</h2>
+  <p *ngIf="selectedTodoList">Rename list | Delete list | Create to do</p>
 </div>
 
 <div class="row">
-  <div class="column" style="background-color:#d0d0d0;"><app-todo-lists></app-todo-lists></div>
-  <div class="wide-column" style="background-color:white;">Column</div>
+  <div class="column" style="background-color:#d0d0d0;">
+    <ul *ngIf="todoLists">
+        <li *ngFor="let list of todoLists">
+            <button (click)="setSelectedTodoListId()">{{ list.name}}</button>
+        </li>
+    </ul>
+    <button (click)="createTodoList()">Create new list</button>
+  </div>
+  
+  <div class="wide-column" style="background-color:white;">
+    <table>
+      <thead>
+          <tr>
+              <th>Todo Id</th>
+              <th>Todo List Id</th>
+              <th>Description</th>
+              <th>Due Date</th>
+              <th>Is Important?</th>
+              <th>Is Complete?</th>
+              <th colspan="3">Actions</th>
+          </tr>
+      </thead>
+      <tbody *ngIf="selectedTodoList.todos">
+          <tr *ngFor="let todo of selectedTodoList.todos">
+              <td>{{ todo?.todoId }}</td>
+              <td>{{ todo?.todoListId }}</td>
+              <td>{{ todo?.description }}</td>
+              <td>{{ todo?.dueDate }}</td>
+              <td>{{ todo?.isImportant }}</td>
+              <td>{{ todo?.isComplete }}</td>
+              <td>Mark complete/incomplete</td>
+              <td>Update</td>
+              <td>Delete</td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="footer">

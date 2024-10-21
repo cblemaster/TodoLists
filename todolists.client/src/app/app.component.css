@@ -1,4 +1,46 @@
-﻿* {
+﻿body { 
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+th, td {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+table {
+  margin: 0 auto;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+h2, p {
+  color: #002060;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+li {
+  margin: 10px;
+}
+
+a {
+  color: #002060;
+  font-size: 15px;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  color: #002060;
+  font-size: 15px;
+}
+
+* {
   box-sizing: border-box;
 }
 
