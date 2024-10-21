@@ -1,19 +1,6 @@
-﻿body { 
+﻿/* styling */
+body { 
   font-family: "Helvetica Neue", sans-serif;
-}
-
-th, td {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-table {
-  margin: 0 auto;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
 }
 
 h2, p {
@@ -24,13 +11,26 @@ h2 {
   font-size: 30px;
 }
 
+table {
+  margin: 0 auto;
+}
+
+th, td {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
 li {
   margin: 10px;
 }
 
-a {
-  color: #002060;
-  font-size: 15px;
+button:hover {
+  font-weight: bold;
 }
 
 button {
@@ -44,26 +44,23 @@ button {
   box-sizing: border-box;
 }
 
-/* Style the header */
+/* layout */
 .header {
   background-color: #F7C7AC;
   padding: 10px;
   text-align: center;
 }
 
-/* Container for flexboxes */
 .row {
   display: -webkit-flex;
   display: flex;
 }
 
-/* Create three equal columns that sit next to each other */
 .column {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 10px;
-  /*height: 300px; /* Should be removed. Only for demonstration */
 }
 
 .wide-column {
@@ -73,14 +70,13 @@ button {
   padding: 10px;
 }
 
-/* Style the footer */
 .footer {
   background-color: #f1f1f1;
   padding: 10px;
   text-align: center;
 }
 
-/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+/* Responsive layout - makes the columns stack on top of each other instead of next to each other */
 @media (max-width: 600px) {
   .row {
     -webkit-flex-direction: column;

@@ -8,14 +8,14 @@
   <div class="column" style="background-color:#d0d0d0;">
     <ul *ngIf="todoLists">
         <li *ngFor="let list of todoLists">
-            <button (click)="setSelectedTodoListId()">{{ list.name}}</button>
+            <button (click)="setSelectedTodoList(list.todoListId)">{{ list.name}}</button>
         </li>
     </ul>
     <button (click)="createTodoList()">Create new list</button>
   </div>
   
   <div class="wide-column" style="background-color:white;">
-    <table>
+    <table *ngIf="todos">
       <thead>
           <tr>
               <th>Todo Id</th>
@@ -27,14 +27,14 @@
               <th colspan="3">Actions</th>
           </tr>
       </thead>
-      <tbody *ngIf="selectedTodoList.todos">
-          <tr *ngFor="let todo of selectedTodoList.todos">
-              <td>{{ todo?.todoId }}</td>
-              <td>{{ todo?.todoListId }}</td>
-              <td>{{ todo?.description }}</td>
-              <td>{{ todo?.dueDate }}</td>
-              <td>{{ todo?.isImportant }}</td>
-              <td>{{ todo?.isComplete }}</td>
+      <tbody>
+          <tr *ngFor="let todo of todos">
+              <td>{{ todo.todoId }}</td>
+              <td>{{ todo.todoListId }}</td>
+              <td>{{ todo.description }}</td>
+              <td>{{ todo.dueDate }}</td>
+              <td>{{ todo.isImportant }}</td>
+              <td>{{ todo.isComplete }}</td>
               <td>Mark complete/incomplete</td>
               <td>Update</td>
               <td>Delete</td>
