@@ -7,6 +7,6 @@ export class Todo {
 	todoListId : number = 0;
 	description : string = '';
 	dueDate : Date = new Date();
-	isImportant : Boolean = false;
-	isComplete : Boolean = false;
+	isImportant : boolean = false;
+	isComplete : boolean = false;
 }
