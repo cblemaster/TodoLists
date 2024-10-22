@@ -15,9 +15,23 @@ table {
   margin: 0 auto;
 }
 
+tr:nth-child(even) {
+  background-color: #D0D0D0;
+}
+
+tr:hover {
+  background-color: #4D93D9;
+}
+
 th, td {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 15px;  
+}
+
+th {
+  border-bottom: 1px solid black;
+  padding-bottom: 15px;
 }
 
 ul {
