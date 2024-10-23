@@ -52,6 +52,13 @@ export class AppComponent implements OnInit {
     );
   }
 
+  deleteSelectedTodoList(): void {
+    this.data.deleteList(this.selectedTodoList.todoListId).subscribe(
+      (result) => { return },
+      (error) => { console.error(error) }
+    );
+  }
+
   
   createTodoList() {
 

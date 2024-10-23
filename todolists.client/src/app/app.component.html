@@ -3,7 +3,7 @@
   <h2 *ngIf="selectedTodoList">{{ selectedTodoList.name }}</h2>
   <div *ngIf="selectedTodoList">
     <button>Rename list</button> | 
-    <button>Delete list</button>
+    <button (click)="deleteSelectedTodoList()">Delete list</button>
   </div>
 </div>
 
