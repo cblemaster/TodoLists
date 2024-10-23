@@ -45,6 +45,13 @@ export class AppComponent implements OnInit {
     );
   }
 
+  deleteTodo(id: number): void {
+    this.data.deleteTodo(id).subscribe(
+      (result) => { return },
+      (error) => { console.error(error) }
+    );
+  }
+
   
   createTodoList() {
 
