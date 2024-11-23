@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { TodoList } from '../models/todo-list';
 import { HttpDataService } from '../http-data.service';
 import { Todo } from '../models/todo';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmDeleteModalComponent } from '../dialogs/confirm-delete-modal/confirm-delete-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +18,7 @@ export class AppComponent implements OnInit {
   selectedTodoList! : TodoList;
   todos : Todo[] = [];
   
-  constructor(private data: HttpDataService) { }
+  constructor(private data: HttpDataService, private modalService: NgbModal) { }
   
   ngOnInit() : void {
     this.getTodoLists();
@@ -46,20 +48,30 @@ export class AppComponent implements OnInit {
   }
 
   deleteTodo(id: number): void {
+    // todo > confirmation dialog
+    
     this.data.deleteTodo(id).subscribe(
       (result) => { return },
       (error) => { console.error(error) }
     );
+
+    // todo > success dialog, refresh selectedtodolist
   }
 
   deleteSelectedTodoList(): void {
-    this.data.deleteList(this.selectedTodoList.todoListId).subscribe(
-      (result) => { return },
-      (error) => { console.error(error) }
-    );
+    this.modalService.open(ConfirmDeleteModalComponent);
+    if (this.selectedTodoList.todos.length > 0) {
+      // todo > todos must be deleted first
+    }
+    else {
+      this.data.deleteList(this.selectedTodoList.todoListId).subscribe(
+        (result) => { return },
+        (error) => { console.error(error) }
+      );
+    }
+    // todo > succedss dialog, reset selectedtodolist
   }
 
-  
   createTodoList() {
 
   }

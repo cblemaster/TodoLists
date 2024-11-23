@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirm delete</h4>
+</div>
+<div class="modal-body">
+    <p>
+        <strong>Are you sure you want to delete <span class="text-primary">{{ itemName }}</span> ?</strong>
+    </p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="cancel()">No, Cancel</button>
+    <button type="button" class="btn btn-outline-dark" (click)="confirm()">Yes, Delete</button>
+</div>
