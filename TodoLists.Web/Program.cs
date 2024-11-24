@@ -27,4 +27,4 @@ app.Run();
 //	+ (put) move to list
 
 //  + delete todo - only if IsImportant == false;
-//	+ delete todo list - only if ToDos.All(t => t.IsComplete)
+//	+ delete todo list - only if Todos.All(t => t.IsComplete)
