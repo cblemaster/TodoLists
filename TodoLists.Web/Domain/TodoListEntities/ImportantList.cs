@@ -5,7 +5,7 @@ namespace TodoLists.Web.Domain.TodoListEntities;
 
 public class ImportantList : TodoList
 {
-    public ImportantList(uint todoListId, string name, Todo[] todos) : base(todoListId, name, todos)
+    public ImportantList(int todoListId, string name, Todo[] todos) : base(todoListId, name, todos)
     {
         if (todos.Any(t => !t.IsImportant))
         {

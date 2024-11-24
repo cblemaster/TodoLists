@@ -3,12 +3,13 @@ using TodoLists.Web.Domain.TodoEntities;
 
 namespace TodoLists.Web.Domain.TodoListEntities;
 
-public class TodoList : List<Todo>
+public class TodoList
 {
-    public uint TodoListId { get; private set; }
-    public string Name { get; private set; } = string.Empty;
+    public int TodoListId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public virtual ICollection<Todo> Todos { get; set; }
 
-    public TodoList(uint todoListId, string name, Todo[] todos) : base(todos)
+    public TodoList(int todoListId, string name, Todo[] todos)
     {
         if (todoListId == 0) { throw new ArgumentException("Todo list id must be non-zero.", nameof(todoListId)); }
         if (string.IsNullOrWhiteSpace(name)) { throw new ArgumentException("List name is required and cannot consist of only whitespace characters.", nameof(name)); }
@@ -16,5 +17,6 @@ public class TodoList : List<Todo>
 
         TodoListId = todoListId;
         Name = name;
+        Todos = todos;
     }
 }

@@ -5,7 +5,7 @@ namespace TodoLists.Web.Domain.TodoListEntities;
 
 public class CompletedList : TodoList
 {
-    public CompletedList(uint todoListId, string name, Todo[] todos) : base(todoListId, name, todos)
+    public CompletedList(int todoListId, string name, Todo[] todos) : base(todoListId, name, todos)
     {
         if (todos.Any(t => !t.IsComplete))
         {

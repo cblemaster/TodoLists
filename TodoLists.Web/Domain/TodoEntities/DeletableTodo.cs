@@ -1,9 +1,11 @@
 ﻿
+using TodoLists.Web.Domain.TodoListEntities;
+
 namespace TodoLists.Web.Domain.TodoEntities;
 
 public class DeletableTodo : Todo
 {
-    public DeletableTodo(uint todoId, string title, DateOnly? dueDate, bool isImportant, bool isComplete) : base(todoId, title, dueDate, isImportant, isComplete)
+    public DeletableTodo(int todoId, int todoListId, string title, DateOnly? dueDate, bool isImportant, bool isComplete, TodoList todoList) : base(todoId, todoListId, title, dueDate, isImportant, isComplete, todoList)
     {
         if (isImportant)
         {
