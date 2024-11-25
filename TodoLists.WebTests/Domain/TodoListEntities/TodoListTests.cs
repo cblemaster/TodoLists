@@ -1,7 +1,8 @@
 ﻿
 using TodoLists.Web.Domain.TodoEntities;
+using TodoLists.Web.Domain.TodoListEntities;
 
-namespace TodoLists.Web.Domain.TodoListEntities.Tests;
+namespace TodoLists.WebTests.Domain.TodoListEntities;
 
 [TestClass()]
 public class TodoListTests
@@ -15,7 +16,7 @@ public class TodoListTests
         Todo[] Todos = [];
 
         // act & assert
-        Assert.ThrowsException<ArgumentException>(() => { new TodoList(TodoListId, Name, Todos); });
+        Assert.ThrowsException<ArgumentException>(() => new TodoList(TodoListId, Name, Todos));
     }
     [TestMethod()]
     public void WhenConstructingThrowsArgumentExceptionIfTodolistIdIsLessThanZero()
@@ -26,7 +27,7 @@ public class TodoListTests
         Todo[] Todos = [];
 
         // act & assert
-        Assert.ThrowsException<ArgumentException>(() => { new TodoList(TodoListId, Name, Todos); });
+        Assert.ThrowsException<ArgumentException>(() => new TodoList(TodoListId, Name, Todos));
     }
     [TestMethod()]
     public void WhenConstructingThrowsArgumentExceptionIfNameIsNull()
@@ -37,7 +38,7 @@ public class TodoListTests
         Todo[] Todos = [];
 
         // act & assert
-        Assert.ThrowsException<ArgumentException>(() => { new TodoList(TodoListId, Name, Todos); });
+        Assert.ThrowsException<ArgumentException>(() => new TodoList(TodoListId, Name, Todos));
     }
     [TestMethod()]
     public void WhenConstructingThrowsArgumentExceptionIfNameIsEmptyString()
@@ -48,7 +49,7 @@ public class TodoListTests
         Todo[] Todos = [];
 
         // act & assert
-        Assert.ThrowsException<ArgumentException>(() => { new TodoList(TodoListId, Name, Todos); });
+        Assert.ThrowsException<ArgumentException>(() => new TodoList(TodoListId, Name, Todos));
     }
     [TestMethod()]
     public void WhenConstructingThrowsArgumentExceptionIfNameIsWhitespace()
@@ -59,7 +60,7 @@ public class TodoListTests
         Todo[] Todos = [];
 
         // act & assert
-        Assert.ThrowsException<ArgumentException>(() => { new TodoList(TodoListId, Name, Todos); });
+        Assert.ThrowsException<ArgumentException>(() => new TodoList(TodoListId, Name, Todos));
     }
     [TestMethod()]
     public void WhenConstructingThrowsArgumentExceptionIfNameIsMoreThan255Characters()
@@ -70,7 +71,7 @@ public class TodoListTests
         Todo[] Todos = [];
 
         // act & assert
-        Assert.ThrowsException<ArgumentException>(() => { new TodoList(TodoListId, Name, Todos); });
+        Assert.ThrowsException<ArgumentException>(() => new TodoList(TodoListId, Name, Todos));
     }
     [TestMethod()]
     public void WhenConstructingSetsTodosToEmptyCollectionIfNull()
