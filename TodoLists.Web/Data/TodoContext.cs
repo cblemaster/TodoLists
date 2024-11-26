@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using TodoLists.Web.Domain.TodoEntities;
-using TodoLists.Web.Domain.TodoListEntities;
+using TodoLists.Web.Entities;
 
 namespace TodoLists.Web.Data;
 
