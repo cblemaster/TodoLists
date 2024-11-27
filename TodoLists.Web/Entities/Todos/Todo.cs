@@ -1,15 +1,17 @@
 ﻿
-namespace TodoLists.Web.Entities;
+using TodoLists.Web.Entities.Lists;
+
+namespace TodoLists.Web.Entities.Todos;
 
 public class Todo
 {
-    public uint TodoId { get; private set; }
-    public uint TodoListId { get; private set; }
-    public string Title { get; private set; } = string.Empty;
-    public DateOnly? DueDate { get; private set; }
-    public bool IsImportant { get; private set; }
-    public bool IsComplete { get; private set; }
-    public virtual TodoList TodoList { get; private set; } = default!;
+    public required int TodoId { get; set; }
+    public int ListId { get; set; }
+    public required string Description { get; set; }
+    public DateOnly? DueDate { get; set; }
+    public bool IsImportant { get; set; }
+    public bool IsComplete { get; set; }
+    public virtual ListDetail List { get; set; } = default!;
 
     public Todo()
     {
