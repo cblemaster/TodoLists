@@ -10,7 +10,7 @@ internal class TodoListDbContext : DbContext
     public DbSet<TodoList> TodoLists { get; set; } = default!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-        optionsBuilder.UseSqlServer(@"Server=.;Database=ListDetails;Trusted_Connection=true;Trust Server Certificate=true");
+        optionsBuilder.UseSqlServer(@"Server=.;Database=TodoLists;Trusted_Connection=true;Trust Server Certificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
