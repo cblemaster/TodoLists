@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoLists.Domain", "TodoLists.Domain\TodoLists.Domain.csproj", "{2098AE17-B947-4A00-B5C4-EE3CC41A7035}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoLists.Infrastructure", "TodoLists.Infrastructure\TodoLists.Infrastructure.csproj", "{A623E22B-03DC-4B96-AAA3-E3F0AB2B0D56}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoLists.API", "TodoLists.API\TodoLists.API.csproj", "{5655EB75-4ED6-4598-B7C8-CB82331DA860}"
 EndProject
 Global
@@ -24,10 +22,6 @@ Global
 		{2098AE17-B947-4A00-B5C4-EE3CC41A7035}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2098AE17-B947-4A00-B5C4-EE3CC41A7035}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2098AE17-B947-4A00-B5C4-EE3CC41A7035}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A623E22B-03DC-4B96-AAA3-E3F0AB2B0D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A623E22B-03DC-4B96-AAA3-E3F0AB2B0D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A623E22B-03DC-4B96-AAA3-E3F0AB2B0D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A623E22B-03DC-4B96-AAA3-E3F0AB2B0D56}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5655EB75-4ED6-4598-B7C8-CB82331DA860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5655EB75-4ED6-4598-B7C8-CB82331DA860}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5655EB75-4ED6-4598-B7C8-CB82331DA860}.Release|Any CPU.ActiveCfg = Release|Any CPU
