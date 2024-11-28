@@ -1,7 +1,7 @@
 ﻿
 namespace TodoLists.API.Data.Results;
 
-internal abstract class Result<T>
+internal sealed class Result<T>
 {
     internal required ResultType ResultType { get; init; }
     internal required string Message { get; init; }

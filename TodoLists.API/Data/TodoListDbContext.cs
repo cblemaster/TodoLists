@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using TodoLists.API.Data.Models;
+using TodoLists.API.Data.Results;
 using TodoLists.API.Validation;
 using TodoLists.Domain;
 
@@ -71,100 +72,100 @@ internal class TodoListDbContext : DbContext
     internal async Task<Todo?> GetTodoAsync(Guid id) =>
         await Todos.Include(t => t.TodoList).SingleOrDefaultAsync(t => t.Id == id);
 
-    internal async Task<TodoList> CreateTodoListAsync(CreateTodoList dto)
+    internal async Task<Result<TodoList>> CreateTodoListAsync(CreateTodoList dto)
     {
         ValidationResult vr = dto.Name.ValidateTodoListName();
         if (!vr.IsValid)
         {
-            return TodoList.NotValid(vr.Errors);
+            return new Result<TodoList>() { Message = "The following validation errors occurred:\n" + string.Join('\n', vr.Errors), ResultType = ResultType.Invalid };
         }
         else
         {
             await TodoLists.AddAsync(new TodoList() { Id = dto.Id, Name = dto.Name });
             await SaveChangesAsync();
-            return TodoList.NoContent();
+            return new Result<TodoList>() { Message = "Created successfully.", ResultType = ResultType.Success };
         }
     }
 
-    internal async Task<Todo> CreateTodoAsync(CreateTodo dto)
+    internal async Task<Result<Todo>> CreateTodoAsync(CreateTodo dto)
     {
         ValidationResult vr = dto.Description.ValidateTodoDescription();
         if (!vr.IsValid)
         {
-            return Todo.NotValid(vr.Errors);
+            return new Result<Todo>() { Message = "The following validation errors occurred:\n" + string.Join('\n', vr.Errors), ResultType = ResultType.Invalid };
         }
         else
         {
             await Todos.AddAsync(new Todo() { Id = dto.Id, Description = dto.Description });
             await SaveChangesAsync();
-            return Todo.NoContent();
+            return new Result<Todo>() { Message = "Created successfully.", ResultType = ResultType.Success };
         }
     }
 
-    internal async Task<TodoList> DeleteTodoListAsync(Guid id)
+    internal async Task<Result<TodoList>> DeleteTodoListAsync(Guid id)
     {
         if ((await GetListDetailAsync(id) is not TodoList list))
         {
-            return TodoList.NotFound();
+            return new Result<TodoList>() { Message = "Todo list not found.", ResultType = ResultType.NotFound };
         }
         else if (list.Todos.Any(t => !t.IsComplete))
         {
-            return TodoList.Error("Cannot delete todo list because it contains todos that are not complete.");
+            return new Result<TodoList>() { Message = "Cannot delete todo list because it contains todos that are not complete.", ResultType = ResultType.Error };
         }
         else
         {
             TodoLists.Remove(list);
             await SaveChangesAsync();
-            return TodoList.NoContent();
+            return new Result<TodoList>() { Message = "Toggled successfully.", ResultType = ResultType.Success };
         }
     }
-    internal async Task<Todo> DeleteTodoAsync(Guid id)
+    internal async Task<Result<Todo>> DeleteTodoAsync(Guid id)
     {
         if ((await GetTodoAsync(id)) is not Todo todo)
         {
-            return Todo.NotFound();
+            return new Result<Todo>() { Message = "Todo not found.", ResultType = ResultType.NotFound };
         }
         else if (todo.IsImportant)
         {
-            return Todo.Error("Cannot delete important todos.");
+            return new Result<Todo>() { Message = "Cannot delete important todos.", ResultType = ResultType.Error };
         }
         else
         {
             Todos.Remove(todo);
             await SaveChangesAsync();
-            return Todo.NoContent();
+            return new Result<Todo>() { Message = "Deleted successfully.", ResultType = ResultType.Success };
         }
     }
 
-    internal async Task<TodoList> RenameTodoListAsync(Guid id, RenameTodoList dto)
+    internal async Task<Result<TodoList>> RenameTodoListAsync(Guid id, RenameTodoList dto)
     {
         ValidationResult vr = dto.Name.ValidateTodoListName();
         if ((await GetListDetailAsync(id)) is not TodoList list)
         {
-            return TodoList.NotFound();
+            return new Result<TodoList>() { Message = "Todo list not found.", ResultType = ResultType.NotFound };
         }
         else if (!vr.IsValid)
         {
-            return TodoList.NotValid(vr.Errors);
+            return new Result<TodoList>() { Message = "The following validation errors occurred:\n" + string.Join('\n', vr.Errors), ResultType = ResultType.Invalid };
         }
         else if (list.Name != dto.Name)
         {
             list.Name = dto.Name;
             await SaveChangesAsync();
-        }        
-        return TodoList.NoContent();
+        }
+        return new Result<TodoList>() { Message = "Renamed successfully.", ResultType = ResultType.Success };
     }
     
-    internal async Task<Todo> UpdateTodoAsync(Guid id, UpdateTodo dto)
+    internal async Task<Result<Todo>> UpdateTodoAsync(Guid id, UpdateTodo dto)
     {
         ValidationResult vr = dto.Description.ValidateTodoDescription();
         if ((await GetTodoAsync(id)) is not Todo todo)
         {
-            return Todo.NotFound();
+            return new Result<Todo>() { Message = "Todo not found.", ResultType = ResultType.NotFound };
         }
         else if (!vr.IsValid)
         {
-            return Todo.NotValid(vr.Errors);
+            return new Result<Todo>() { Message = "The following validation errors occurred:\n" + string.Join('\n', vr.Errors), ResultType = ResultType.Invalid };
         }
         else
         {
@@ -175,49 +176,49 @@ internal class TodoListDbContext : DbContext
             if (todo.TodoListId != dto.TodoListId) { todo.TodoListId = dto.TodoListId; }
 
             await SaveChangesAsync();
-            return Todo.NoContent();
+            return new Result<Todo>() { Message = "Updated successfully.", ResultType = ResultType.Success };
         }
     }
 
-    internal async Task<Todo> ToggleTodoImportanceAsync(Guid id)
+    internal async Task<Result<Todo>> ToggleTodoImportanceAsync(Guid id)
     {
         if ((await GetTodoAsync(id)) is not Todo todo)
         {
-            return Todo.NotFound();
+            return new Result<Todo>() { Message = "Todo not found.", ResultType = ResultType.NotFound };
         }
         else
         {
             todo.IsImportant = !todo.IsImportant;
             await SaveChangesAsync();
-            return Todo.NoContent();
+            return new Result<Todo>() { Message = "Toggled successfully.", ResultType = ResultType.Success };
         }
     }
 
-    internal async Task<Todo> ToggleTodoCompletionAsync(Guid id)
+    internal async Task<Result<Todo>> ToggleTodoCompletionAsync(Guid id)
     {
         if ((await GetTodoAsync(id)) is not Todo todo)
         {
-            return Todo.NotFound();
+            return new Result<Todo>() { Message = "Todo not found.", ResultType = ResultType.NotFound };
         }
         else
         {
             todo.IsComplete = !todo.IsComplete;
             await SaveChangesAsync();
-            return Todo.NoContent();
+            return new Result<Todo>() { Message = "Toggled successfully.", ResultType = ResultType.Success };
         }
     }
 
-    internal async Task<Todo> MoveTodoToListAsync(Guid id, UpdateTodo dto)
+    internal async Task<Result<Todo>> MoveTodoToListAsync(Guid id, UpdateTodo dto)
     {
         if ((await GetTodoAsync(id)) is not Todo todo)
         {
-            return Todo.NotFound();
+            return new Result<Todo>() { Message = "Todo not found.", ResultType = ResultType.NotFound };
         }
         else
         {
             if (todo.TodoListId != dto.TodoListId) { todo.TodoListId = dto.TodoListId; }
             await SaveChangesAsync();
-            return Todo.NoContent();
+            return new Result<Todo>() { Message = "Moved successfully.", ResultType = ResultType.Success };
         }
     }
 }
