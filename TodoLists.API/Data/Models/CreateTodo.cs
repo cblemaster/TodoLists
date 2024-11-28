@@ -1,3 +1,4 @@
+﻿
 namespace TodoLists.API.Data.Models;
 
 internal sealed class CreateTodo

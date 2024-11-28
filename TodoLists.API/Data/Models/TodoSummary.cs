@@ -1,4 +1,4 @@
-namespace TodoLists.API.Data.Models;
+﻿namespace TodoLists.API.Data.Models;
 
 internal sealed class TodoSummary
 {
