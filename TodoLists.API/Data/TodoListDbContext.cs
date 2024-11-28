@@ -27,7 +27,6 @@ internal class TodoListDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Todo_TodoList");
         });
-
         modelBuilder.Entity<TodoList>(entity =>
         {
             entity.ToTable("TodoList");
@@ -69,11 +68,15 @@ internal class TodoListDbContext : DbContext
             )
             .SingleOrDefaultAsync(t => t.Id == id);
 
+    internal async Task<Todo?> GetTodoAsync(Guid id) =>
+        await Todos.Include(t => t.TodoList).SingleOrDefaultAsync(t => t.Id == id);
+
     internal async Task<TodoList> CreateTodoListAsync(CreateTodoList dto)
     {
-        if (!dto.Name.ValidateTodoListName().IsValid)
+        ValidationResult vr = dto.Name.ValidateTodoListName();
+        if (!vr.IsValid)
         {
-            return TodoList.NotValid(dto.Name.ValidateTodoListName().Errors);
+            return TodoList.NotValid(vr.Errors);
         }
         else
         {
@@ -85,9 +88,10 @@ internal class TodoListDbContext : DbContext
 
     internal async Task<Todo> CreateTodoAsync(CreateTodo dto)
     {
-        if (!dto.Description.ValidateTodoDescription().IsValid)
+        ValidationResult vr = dto.Description.ValidateTodoDescription();
+        if (!vr.IsValid)
         {
-            return Todo.NotValid(dto.Description.ValidateTodoDescription().Errors);
+            return Todo.NotValid(vr.Errors);
         }
         else
         {
@@ -99,7 +103,7 @@ internal class TodoListDbContext : DbContext
 
     internal async Task<TodoList> DeleteTodoListAsync(Guid id)
     {
-        if ((await TodoLists.FindAsync(id)) is not TodoList list)
+        if ((await GetListDetailAsync(id) is not TodoList list))
         {
             return TodoList.NotFound();
         }
@@ -116,7 +120,7 @@ internal class TodoListDbContext : DbContext
     }
     internal async Task<Todo> DeleteTodoAsync(Guid id)
     {
-        if ((await Todos.FindAsync(id)) is not Todo todo)
+        if ((await GetTodoAsync(id)) is not Todo todo)
         {
             return Todo.NotFound();
         }
@@ -134,35 +138,33 @@ internal class TodoListDbContext : DbContext
 
     internal async Task<TodoList> RenameTodoListAsync(Guid id, RenameTodoList dto)
     {
-        if ((await TodoLists.FindAsync(id)) is not TodoList list)
+        ValidationResult vr = dto.Name.ValidateTodoListName();
+        if ((await GetListDetailAsync(id)) is not TodoList list)
         {
             return TodoList.NotFound();
         }
-        else if (!dto.Name.ValidateTodoListName().IsValid)
+        else if (!vr.IsValid)
         {
-            return TodoList.NotValid(dto.Name.ValidateTodoListName().Errors);
+            return TodoList.NotValid(vr.Errors);
         }
-        else if (list.Name == dto.Name)
-        {
-            return TodoList.NoContent();
-        }
-        else
+        else if (list.Name != dto.Name)
         {
             list.Name = dto.Name;
             await SaveChangesAsync();
-            return TodoList.NoContent();
-        }
+        }        
+        return TodoList.NoContent();
     }
     
     internal async Task<Todo> UpdateTodoAsync(Guid id, UpdateTodo dto)
     {
-        if ((await Todos.FindAsync(id)) is not Todo todo)
+        ValidationResult vr = dto.Description.ValidateTodoDescription();
+        if ((await GetTodoAsync(id)) is not Todo todo)
         {
             return Todo.NotFound();
         }
-        else if (!dto.Description.ValidateTodoDescription().IsValid)
+        else if (!vr.IsValid)
         {
-            return Todo.NotValid(dto.Description.ValidateTodoDescription().Errors);
+            return Todo.NotValid(vr.Errors);
         }
         else
         {
@@ -179,7 +181,7 @@ internal class TodoListDbContext : DbContext
 
     internal async Task<Todo> ToggleTodoImportanceAsync(Guid id)
     {
-        if ((await Todos.FindAsync(id)) is not Todo todo)
+        if ((await GetTodoAsync(id)) is not Todo todo)
         {
             return Todo.NotFound();
         }
@@ -193,7 +195,7 @@ internal class TodoListDbContext : DbContext
 
     internal async Task<Todo> ToggleTodoCompletionAsync(Guid id)
     {
-        if ((await Todos.FindAsync(id)) is not Todo todo)
+        if ((await GetTodoAsync(id)) is not Todo todo)
         {
             return Todo.NotFound();
         }
@@ -207,7 +209,7 @@ internal class TodoListDbContext : DbContext
 
     internal async Task<Todo> MoveTodoToListAsync(Guid id, UpdateTodo dto)
     {
-        if ((await Todos.FindAsync(id)) is not Todo todo)
+        if ((await GetTodoAsync(id)) is not Todo todo)
         {
             return Todo.NotFound();
         }
