@@ -1,6 +1,3 @@
-﻿
-using TodoLists.Domain;
-
 namespace TodoLists.API.Data.Models;
 
 internal sealed class CreateTodo

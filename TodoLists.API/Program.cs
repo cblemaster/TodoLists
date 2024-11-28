@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TodoLists.API.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-IConfigurationRoot configRoot =  new ConfigurationBuilder()
+IConfigurationRoot configRoot = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
             .Build();
