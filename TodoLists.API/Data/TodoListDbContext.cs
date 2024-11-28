@@ -9,8 +9,7 @@ internal class TodoListDbContext : DbContext
     public DbSet<Todo> Todos { get; set; } = default!;
     public DbSet<TodoList> TodoLists { get; set; } = default!;
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-        optionsBuilder.UseSqlServer(@"Server=.;Database=TodoLists;Trusted_Connection=true;Trust Server Certificate=true");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,4 +35,17 @@ internal class TodoListDbContext : DbContext
                 .IsUnicode(false);
         });
     }
+
+    // get todolist summaries
+    // get todolist detail (id)
+    // get todo (id)
+
+    // create todolist
+    // create todo
+
+    // delete todolist
+    // delete todo
+
+    // rename todolist
+    // update to do - change desc, due date, todolist; toggle importance, toggle complete
 }
