@@ -41,6 +41,9 @@ internal partial class TodoListDbContext
             .SingleOrDefaultAsync(t => t.Id == id);
     internal async Task<Todo?> GetTodoAsync(Guid id) =>
         await Todos.Include(t => t.TodoList).SingleOrDefaultAsync(t => t.Id == id);
+    internal IEnumerable<Todo> GetTodosDueToday() => Todos.Where(t => t.DueDate.HasValue && t.DueDate.Value == DateOnly.FromDateTime(DateTime.Today) && !t.IsComplete).AsEnumerable();
+    internal IEnumerable<Todo> GetImportantTodos() => Todos.Where(t => t.IsImportant && !t.IsComplete).AsEnumerable();
+    internal IEnumerable<Todo> GetCompletedTodos() => Todos.Where(t => t.IsComplete).AsEnumerable();
     #endregion queries
 
     #region commands
