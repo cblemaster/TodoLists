@@ -15,11 +15,11 @@ internal partial class TodoListDbContext
         TodoLists
             .Include(t => t.Todos)
             .Select(t => new ListSummary()
-            {
-                Id = t.Id,
-                Name = t.Name,
-                CountOfTodosNotComplete = t.Todos.Count(t => !t.IsComplete)
-            }
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    CountOfTodosNotComplete = t.Todos.Count(t => !t.IsComplete)
+                }
             )
             .AsEnumerable();
     internal async Task<TodoList?> GetListDetailAsync(Guid id) =>
@@ -28,15 +28,15 @@ internal partial class TodoListDbContext
         await Todos
             .Include(t => t.TodoList)
             .Select(t => new TodoSummary()
-            {
-                Id = t.Id,
-                Description = t.Description,
-                DueDate = t.DueDate,
-                IsImportant = t.IsImportant,
-                IsComplete = t.IsComplete,
-                TodoListId = t.TodoList.Id,
-                ListName = t.TodoList.Name
-            }
+                {
+                    Id = t.Id,
+                    Description = t.Description,
+                    DueDate = t.DueDate,
+                    IsImportant = t.IsImportant,
+                    IsComplete = t.IsComplete,
+                    TodoListId = t.TodoList.Id,
+                    ListName = t.TodoList.Name
+                }
             )
             .SingleOrDefaultAsync(t => t.Id == id);
     internal async Task<Todo?> GetTodoAsync(Guid id) =>
@@ -67,7 +67,7 @@ internal partial class TodoListDbContext
         }
         else
         {
-            await Todos.AddAsync(new Todo() { Id = dto.Id, Description = dto.Description });
+            await Todos.AddAsync(new Todo() { Id = dto.Id, Description = dto.Description, DueDate = dto.DueDate, IsImportant = dto.IsImportant, IsComplete = dto.IsComplete, TodoListId = dto.TodoListId });
             await SaveChangesAsync();
             return new Result<Todo>() { Message = Strings.CREATED_SUCCESSFULLY, ResultType = ResultType.Success };
         }
@@ -187,5 +187,4 @@ internal partial class TodoListDbContext
         }
     }
     #endregion commands
-
 }

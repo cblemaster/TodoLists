@@ -3,7 +3,7 @@ namespace TodoLists.API.Data.Models;
 
 internal sealed class CreateTodo
 {
-    internal Guid Id { get; set; }
+    internal required Guid Id { get; set; }
     internal string Description { get; set; } = string.Empty;
     internal DateOnly? DueDate { get; set; }
     internal bool IsImportant { get; set; }
