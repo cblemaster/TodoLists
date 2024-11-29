@@ -10,6 +10,9 @@ internal partial class TodoListDbContext : DbContext
     public DbSet<Todo> Todos { get; set; } = default!;
     public DbSet<TodoList> TodoLists { get; set; } = default!;
 
+    public TodoListDbContext(DbContextOptions<TodoListDbContext> options)
+        : base(options) { }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
