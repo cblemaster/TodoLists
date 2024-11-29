@@ -36,3 +36,6 @@
 +Due date for todo is optional and can be in the past
 +Important todos cannot be deleted
 +Todo lists cannot be deleted if they have any todo 'children' that are not complete; todo lists having only completed todos can be deleted
+## Instructions for running the app (TBD)
+## Improvement opportunities (TBD)
++See todo comments in code
