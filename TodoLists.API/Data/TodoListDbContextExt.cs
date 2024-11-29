@@ -70,7 +70,7 @@ internal partial class TodoListDbContext
         }
         else
         {
-            await Todos.AddAsync(new Todo() { Id = dto.Id, Description = dto.Description, DueDate = dto.DueDate, IsImportant = dto.IsImportant, IsComplete = dto.IsComplete, TodoListId = dto.TodoListId });
+            await Todos.AddAsync(new Todo() { Id = dto.Id, Description = dto.Description, DueDate = dto.DueDate, IsImportant = dto.IsImportant, IsComplete = dto.IsComplete, TodoList = await TodoLists.SingleOrDefaultAsync(l => l.Id == dto.TodoListId) ?? new() });
             await SaveChangesAsync();
             return new Result<Todo>() { Message = Strings.CREATED_SUCCESSFULLY, ResultType = ResultType.Success };
         }

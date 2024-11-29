@@ -5,13 +5,10 @@ using TodoLists.Domain;
 
 namespace TodoLists.API.Data;
 
-internal partial class TodoListDbContext : DbContext
+internal partial class TodoListDbContext(DbContextOptions<TodoListDbContext> options) : DbContext(options)
 {
     public DbSet<Todo> Todos { get; set; } = default!;
     public DbSet<TodoList> TodoLists { get; set; } = default!;
-
-    public TodoListDbContext(DbContextOptions<TodoListDbContext> options)
-        : base(options) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 

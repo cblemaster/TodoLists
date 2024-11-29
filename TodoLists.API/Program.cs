@@ -115,7 +115,7 @@ app.MapDelete("/todo{id:guid}", async Task<Results<NotFound<string>, ProblemHttp
             : TypedResults.Problem("An unknown error occured deleting the todo.")
     };
 });
-app.MapPut("/list{id:guid}/rename", async Task<Results<NotFound<string>, ValidationProblem, NoContent, ProblemHttpResult>> (TodoListDbContext context, Guid id, RenameTodoList dto) =>
+app.MapPut("/list/{id:guid}/rename", async Task<Results<NotFound<string>, ValidationProblem, NoContent, ProblemHttpResult>> (TodoListDbContext context, Guid id, RenameTodoList dto) =>
 {
     TodoLists.API.Data.Results.Result<TodoList> result = await context.RenameTodoListAsync(id, dto);
     switch (result.ResultType)
