@@ -1,9 +1,9 @@
 ﻿
 namespace TodoLists.API.Data.Models;
 
-internal sealed class ListSummary
+internal sealed class ListDetail
 {
     internal required Guid Id { get; init; }
     internal required string Name { get; init; }
-    internal required int CountOfTodosNotComplete { get; init; }
+    internal required IEnumerable<TodoSummary> Todos { get; init; }
 }

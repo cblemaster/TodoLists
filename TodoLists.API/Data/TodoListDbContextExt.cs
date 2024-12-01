@@ -15,69 +15,77 @@ internal partial class TodoListDbContext
         TodoLists
             .Include(t => t.Todos)
             .Select(t => new ListSummary()
-                {
-                    Id = t.Id,
-                    Name = t.Name,
-                    CountOfTodosNotComplete = t.Todos.Count(t => !t.IsComplete)
-                }
+            {
+                Id = t.Id,
+                Name = t.Name,
+                CountOfTodosNotComplete = t.Todos.Count(t => !t.IsComplete)
+            }
             )
             .AsEnumerable();
-    internal async Task<TodoList?> GetListDetailAsync(Guid id) =>
-        await TodoLists.Include(t => t.Todos).SingleOrDefaultAsync(t => t.Id == id);
+    internal async Task<ListDetail> GetListAsync(Guid id)
+    {
+        TodoList? list = await TodoLists.Include(t => t.Todos).SingleOrDefaultAsync(t => t.Id == id);
+        return new ListDetail() { Id = list.Id, Name = list.Name, Todos = list.Todos.Select(t => new TodoSummary() { Id = t.Id, Description = t.Description, DueDate = t.DueDate, IsImportant = t.IsImportant, IsComplete = t.IsComplete, TodoListId = t.TodoList.Id, ListName = t.TodoList.Name }) };
+    }
     internal async Task<TodoSummary?> GetTodoSummaryAsync(Guid id) =>
         await Todos
             .Include(t => t.TodoList)
             .Select(t => new TodoSummary()
-                {
-                    Id = t.Id,
-                    Description = t.Description,
-                    DueDate = t.DueDate,
-                    IsImportant = t.IsImportant,
-                    IsComplete = t.IsComplete,
-                    TodoListId = t.TodoList.Id,
-                    ListName = t.TodoList.Name
-                }
+            {
+                Id = t.Id,
+                Description = t.Description,
+                DueDate = t.DueDate,
+                IsImportant = t.IsImportant,
+                IsComplete = t.IsComplete,
+                TodoListId = t.TodoList.Id,
+                ListName = t.TodoList.Name
+            }
             )
             .SingleOrDefaultAsync(t => t.Id == id);
-    internal async Task<Todo?> GetTodoAsync(Guid id) =>
+    internal IEnumerable<TodoSummary> GetTodosDueToday() => Todos.Where(t => t.DueDate.HasValue && t.DueDate.Value == DateOnly.FromDateTime(DateTime.Today) && !t.IsComplete).Select(l => new TodoSummary() { Id = l.Id, Description = l.Description, DueDate = l.DueDate, IsImportant = l.IsImportant, IsComplete = l.IsComplete, TodoListId = l.TodoList.Id, ListName = l.TodoList.Name });
+    internal IEnumerable<TodoSummary> GetImportantTodos() => Todos.Where(t => t.IsImportant && !t.IsComplete).Select(l => new TodoSummary() { Id = l.Id, Description = l.Description, DueDate = l.DueDate, IsImportant = l.IsImportant, IsComplete = l.IsComplete, TodoListId = l.TodoList.Id, ListName = l.TodoList.Name });
+    internal IEnumerable<TodoSummary> GetCompletedTodos() => Todos.Where(t => t.IsComplete).Select(l => new TodoSummary() { Id = l.Id, Description = l.Description, DueDate = l.DueDate, IsImportant = l.IsImportant, IsComplete = l.IsComplete, TodoListId = l.TodoList.Id, ListName = l.TodoList.Name });
+
+    private async Task<TodoList?> GetListEntityAsync(Guid id) => await TodoLists.Include(l => l.Todos).SingleOrDefaultAsync(l => l.Id == id);
+    internal async Task<Todo?> GetTodoEntityAsync(Guid id) =>
         await Todos.Include(t => t.TodoList).SingleOrDefaultAsync(t => t.Id == id);
-    internal IEnumerable<Todo> GetTodosDueToday() => Todos.Where(t => t.DueDate.HasValue && t.DueDate.Value == DateOnly.FromDateTime(DateTime.Today) && !t.IsComplete).AsEnumerable();
-    internal IEnumerable<Todo> GetImportantTodos() => Todos.Where(t => t.IsImportant && !t.IsComplete).AsEnumerable();
-    internal IEnumerable<Todo> GetCompletedTodos() => Todos.Where(t => t.IsComplete).AsEnumerable();
+
     #endregion queries
 
     #region commands
-    internal async Task<Result<TodoList>> CreateTodoListAsync(CreateTodoList dto)
+    internal async Task<Result<ListSummary>> CreateTodoListAsync(CreateTodoList dto)
     {
         ValidationResult vr = dto.Name.ValidateTodoListName();
         if (!vr.IsValid)
         {
-            return new Result<TodoList>() { Message = Strings.FormattedValidationErrors(vr.Errors), ResultType = ResultType.Invalid };
+            return new Result<ListSummary>() { Message = Strings.FormattedValidationErrors(vr.Errors), ResultType = ResultType.Invalid };
         }
         else
         {
             await TodoLists.AddAsync(new TodoList() { Id = dto.Id, Name = dto.Name });
             await SaveChangesAsync();
-            return new Result<TodoList>() { Message = Strings.CREATED_SUCCESSFULLY, ResultType = ResultType.Success };
+            TodoList? list = await TodoLists.SingleOrDefaultAsync(l => l.Id == dto.Id);
+            return new Result<ListSummary>() { Message = Strings.CREATED_SUCCESSFULLY, ResultType = ResultType.Success, Payload = new ListSummary() { Id = list.Id, Name = list.Name, CountOfTodosNotComplete = list.Todos.Count(t => !t.IsComplete) } };
         }
     }
-    internal async Task<Result<Todo>> CreateTodoAsync(CreateTodo dto)
+    internal async Task<Result<TodoSummary>> CreateTodoAsync(CreateTodo dto)
     {
         ValidationResult vr = dto.Description.ValidateTodoDescription();
         if (!vr.IsValid)
         {
-            return new Result<Todo>() { Message = Strings.FormattedValidationErrors(vr.Errors), ResultType = ResultType.Invalid };
+            return new Result<TodoSummary>() { Message = Strings.FormattedValidationErrors(vr.Errors), ResultType = ResultType.Invalid };
         }
         else
         {
             await Todos.AddAsync(new Todo() { Id = dto.Id, Description = dto.Description, DueDate = dto.DueDate, IsImportant = dto.IsImportant, IsComplete = dto.IsComplete, TodoList = await TodoLists.SingleOrDefaultAsync(l => l.Id == dto.TodoListId) ?? new() });
             await SaveChangesAsync();
-            return new Result<Todo>() { Message = Strings.CREATED_SUCCESSFULLY, ResultType = ResultType.Success };
+            Todo? todo = await Todos.SingleOrDefaultAsync(t => t.Id == dto.Id);
+            return new Result<TodoSummary>() { Message = Strings.CREATED_SUCCESSFULLY, ResultType = ResultType.Success, Payload = new TodoSummary() { Id = todo.Id, Description = todo.Description, DueDate = todo.DueDate, IsImportant = todo.IsImportant, IsComplete = todo.IsComplete, TodoListId = todo.TodoList.Id, ListName = todo.TodoList.Name } };
         }
     }
     internal async Task<Result<TodoList>> DeleteTodoListAsync(Guid id)
     {
-        if ((await GetListDetailAsync(id) is not TodoList list))
+        if ((await GetListEntityAsync(id) is not TodoList list))
         {
             return new Result<TodoList>() { Message = Strings.NotFound<TodoList>(), ResultType = ResultType.NotFound };
         }
@@ -94,7 +102,7 @@ internal partial class TodoListDbContext
     }
     internal async Task<Result<Todo>> DeleteTodoAsync(Guid id)
     {
-        if ((await GetTodoAsync(id)) is not Todo todo)
+        if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
             return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
@@ -112,7 +120,7 @@ internal partial class TodoListDbContext
     internal async Task<Result<TodoList>> RenameTodoListAsync(Guid id, RenameTodoList dto)
     {
         ValidationResult vr = dto.Name.ValidateTodoListName();
-        if ((await GetListDetailAsync(id)) is not TodoList list)
+        if ((await GetListEntityAsync(id)) is not TodoList list)
         {
             return new Result<TodoList>() { Message = Strings.NotFound<TodoList>(), ResultType = ResultType.NotFound };
         }
@@ -130,7 +138,7 @@ internal partial class TodoListDbContext
     internal async Task<Result<Todo>> UpdateTodoAsync(Guid id, UpdateTodo dto)
     {
         ValidationResult vr = dto.Description.ValidateTodoDescription();
-        if ((await GetTodoAsync(id)) is not Todo todo)
+        if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
             return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
@@ -144,7 +152,6 @@ internal partial class TodoListDbContext
             if (todo.DueDate != dto.DueDate) { todo.DueDate = dto.DueDate; }
             if (todo.IsImportant != dto.IsImportant) { todo.IsImportant = dto.IsImportant; }
             if (todo.IsComplete != dto.IsComplete) { todo.IsComplete = dto.IsComplete; }
-            if (todo.TodoListId != dto.TodoListId) { todo.TodoListId = dto.TodoListId; }
 
             await SaveChangesAsync();
             return new Result<Todo>() { Message = Strings.UPDATED_SUCCESSFULLY, ResultType = ResultType.Success };
@@ -152,7 +159,7 @@ internal partial class TodoListDbContext
     }
     internal async Task<Result<Todo>> ToggleTodoImportanceAsync(Guid id)
     {
-        if ((await GetTodoAsync(id)) is not Todo todo)
+        if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
             return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
@@ -165,7 +172,7 @@ internal partial class TodoListDbContext
     }
     internal async Task<Result<Todo>> ToggleTodoCompletionAsync(Guid id)
     {
-        if ((await GetTodoAsync(id)) is not Todo todo)
+        if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
             return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
@@ -178,16 +185,21 @@ internal partial class TodoListDbContext
     }
     internal async Task<Result<Todo>> MoveTodoToListAsync(Guid id, UpdateTodo dto)
     {
-        if ((await GetTodoAsync(id)) is not Todo todo)
+        if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
             return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
-        else
+        else if (!TodoLists.Select(l => l.Id).Contains(dto.TodoListId))
         {
-            if (todo.TodoListId != dto.TodoListId) { todo.TodoListId = dto.TodoListId; }
-            await SaveChangesAsync();
-            return new Result<Todo>() { Message = Strings.MOVED_SUCCESSFULLY, ResultType = ResultType.Success };
+            return new Result<Todo>() { Message = "Invalid list id.", ResultType = ResultType.Error };
         }
+        else if (todo.TodoListId != dto.TodoListId)
+        {
+            TodoList list = TodoLists.SingleOrDefault(l => l.Id == dto.TodoListId);
+            todo.TodoList = list;
+            await SaveChangesAsync();            
+        }
+        return new Result<Todo>() { Message = Strings.MOVED_SUCCESSFULLY, ResultType = ResultType.Success };
+        #endregion commands
     }
-    #endregion commands
 }
