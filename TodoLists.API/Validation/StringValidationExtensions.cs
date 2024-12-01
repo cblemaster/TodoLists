@@ -1,10 +1,10 @@
 ﻿
 namespace TodoLists.API.Validation;
 
-internal static class StringValidationExtensions
+public static class StringValidationExtensions
 {
     // TODO >> this is the same logic as ValidateTodoDescription(), only the error messages differ
-    internal static ValidationResult ValidateTodoListName(this string s)
+    public static ValidationResult ValidateTodoListName(this string s)
     {
         bool isValid = true;
         List<string> errors = [];
@@ -22,7 +22,7 @@ internal static class StringValidationExtensions
         return new ValidationResult() { IsValid = isValid, Errors = errors };
     }
 
-    internal static ValidationResult ValidateTodoDescription(this string s)
+    public static ValidationResult ValidateTodoDescription(this string s)
     {
         bool isValid = true;
         List<string> errors = [];
