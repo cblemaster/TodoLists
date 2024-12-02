@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-
 using TodoLists.Domain;
 
 namespace TodoLists.API.Data;
