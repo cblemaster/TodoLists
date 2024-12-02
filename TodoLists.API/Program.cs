@@ -14,6 +14,8 @@ string connectionString = configRoot.GetConnectionString("Project") ?? "Error re
 builder.Services.AddDbContext<TodoListDbContext>(options => options.UseSqlServer(connectionString));
 WebApplication app = builder.Build();
 
+// TODO >> endpoint tests, look up best way to do this; want something easily repeatable
+
 // queries
 app.MapGet("/", () => "Welcome to Todo Lists!");
 app.MapGet("/listsummaries", Results<NotFound<string>, Ok<IEnumerable<ListSummary>>> (TodoListDbContext context) =>
