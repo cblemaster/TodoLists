@@ -3,11 +3,11 @@ namespace TodoLists.API.Data.Models;
 
 internal sealed class TodoSummary
 {
-    internal required Guid Id { get; init; }
-    internal required string Description { get; init; }
-    internal DateOnly? DueDate { get; init; }
-    internal bool IsImportant { get; init; }
-    internal bool IsComplete { get; init; }
-    internal Guid TodoListId { get; init; }
-    internal required string ListName { get; init; }
+    public required Guid Id { get; init; }
+    public required string Description { get; init; }
+    public DateOnly? DueDate { get; init; }
+    public bool IsImportant { get; init; }
+    public bool IsComplete { get; init; }
+    public required Guid TodoListId { get; init; }
+    public required string ListName { get; init; }
 }

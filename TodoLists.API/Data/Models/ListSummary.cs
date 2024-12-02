@@ -3,7 +3,7 @@ namespace TodoLists.API.Data.Models;
 
 internal sealed class ListSummary
 {
-    internal required Guid Id { get; init; }
-    internal required string Name { get; init; }
-    internal required int CountOfTodosNotComplete { get; init; }
+    public required Guid Id { get; init; }
+    public required string Name { get; init; }
+    public required int CountOfTodosNotComplete { get; init; }
 }
