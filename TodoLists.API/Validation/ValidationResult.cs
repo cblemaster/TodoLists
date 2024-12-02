@@ -1,8 +1,8 @@
 ﻿
 namespace TodoLists.API.Validation;
 
-public sealed class ValidationResult
+internal sealed class ValidationResult
 {
-    public bool IsValid { get; init; }
-    public IEnumerable<string> Errors { get; init; } = [];
+    internal bool IsValid { get; init; }
+    internal IEnumerable<string> Errors { get; init; } = [];
 }
