@@ -1,6 +1,4 @@
 ﻿
-using TodoLists.API.Data.Constants;
-
 namespace TodoLists.API.Validation;
 
 internal static class StringValidationExtensions
@@ -14,12 +12,12 @@ internal static class StringValidationExtensions
         if (string.IsNullOrWhiteSpace(s))
         {
             isValid = false;
-            errors.Add(Constants.LIST_NAME_REQUIRED);
+            errors.Add(Constants.Constants.LIST_NAME_REQUIRED);
         }
-        else if (s.Length > 255)
+        else if (s.Length > Constants.Constants.LIST_NAME_MAX_LENGTH)
         {
             isValid = false;
-            errors.Add(Constants.LIST_NAME_LENGTH);
+            errors.Add(Constants.Constants.LIST_NAME_LENGTH);
         }
         return new ValidationResult() { IsValid = isValid, Errors = errors };
     }
@@ -32,12 +30,12 @@ internal static class StringValidationExtensions
         if (string.IsNullOrWhiteSpace(s))
         {
             isValid = false;
-            errors.Add(Constants.TODO_DESC_REQUIRED);
+            errors.Add(Constants.Constants.TODO_DESC_REQUIRED);
         }
         else if (s.Length > 255)
         {
             isValid = false;
-            errors.Add(Constants.TODO_DESC_LENGTH);
+            errors.Add(Constants.Constants.TODO_DESC_LENGTH);
         }
         return new ValidationResult() { IsValid = isValid, Errors = errors };
     }

@@ -4,7 +4,7 @@ using TodoLists.API.Data.Models;
 using TodoLists.API.Data.Results;
 using TodoLists.API.Validation;
 using TodoLists.Domain;
-using Strings = TodoLists.API.Data.Constants.Constants;
+using Strings = TodoLists.API.Constants.Constants;
 
 namespace TodoLists.API.Data;
 

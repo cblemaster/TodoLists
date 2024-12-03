@@ -1,8 +1,8 @@
 
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using TodoLists.API.Constants;
 using TodoLists.API.Data;
-using TodoLists.API.Data.Constants;
 using TodoLists.API.Data.Models;
 using TodoLists.Domain;
 

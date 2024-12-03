@@ -1,5 +1,5 @@
 ﻿
-namespace TodoLists.API.Data.Constants;
+namespace TodoLists.API.Constants;
 
 internal static class Constants
 {
