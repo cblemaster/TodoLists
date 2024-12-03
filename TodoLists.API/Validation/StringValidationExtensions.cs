@@ -3,7 +3,7 @@ namespace TodoLists.API.Validation;
 
 internal static class StringValidationExtensions
 {
-    // TODO >> this is the same logic as ValidateTodoDescription(), only the error messages differ
+    // TODO: Validation needs an overhaul...duplicated code here, only the errors differ
     internal static ValidationResult ValidateTodoListName(this string s)
     {
         bool isValid = true;

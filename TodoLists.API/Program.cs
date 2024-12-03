@@ -15,7 +15,7 @@ string connectionString = configRoot.GetConnectionString("Project") ?? Constants
 builder.Services.AddDbContext<TodoListDbContext>(options => options.UseSqlServer(connectionString));
 WebApplication app = builder.Build();
 
-// TODO >> endpoint tests, look up best way to do this; want something easily repeatable
+// TODO: endpoint tests, look up best way to do this; want something easily repeatable
 
 // queries
 app.MapGet("/", () => Constants.WELCOME);
