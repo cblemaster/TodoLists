@@ -60,7 +60,7 @@ internal partial class TodoListDbContext
         ValidationResult vr = dto.Name.ValidateTodoListName();
         if (!vr.IsValid)
         {
-            return new Result<ListSummary>() { Message = Strings.FormattedValidationErrors(vr.Errors), ResultType = ResultType.Invalid };
+            return new Result<ListSummary>() { Message = vr.Errors.FormattedValidationErrors(), ResultType = ResultType.Invalid };
         }
         else
         {
@@ -75,7 +75,7 @@ internal partial class TodoListDbContext
         ValidationResult vr = dto.Description.ValidateTodoDescription();
         if (!vr.IsValid)
         {
-            return new Result<TodoSummary>() { Message = Strings.FormattedValidationErrors(vr.Errors), ResultType = ResultType.Invalid };
+            return new Result<TodoSummary>() { Message = vr.Errors.FormattedValidationErrors(), ResultType = ResultType.Invalid };
         }
         else
         {
@@ -89,7 +89,7 @@ internal partial class TodoListDbContext
     {
         if ((await GetListEntityAsync(id) is not TodoList list))
         {
-            return new Result<TodoList>() { Message = Strings.NotFound<TodoList>(), ResultType = ResultType.NotFound };
+            return new Result<TodoList>() { Message = StringDataExtensions.NotFound<TodoList>(), ResultType = ResultType.NotFound };
         }
         else if (list.Todos.Any(t => !t.IsComplete))
         {
@@ -106,7 +106,7 @@ internal partial class TodoListDbContext
     {
         if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
-            return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
+            return new Result<Todo>() { Message = StringDataExtensions.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
         else if (todo.IsImportant)
         {
@@ -124,11 +124,11 @@ internal partial class TodoListDbContext
         ValidationResult vr = dto.Name.ValidateTodoListName();
         if ((await GetListEntityAsync(id)) is not TodoList list)
         {
-            return new Result<TodoList>() { Message = Strings.NotFound<TodoList>(), ResultType = ResultType.NotFound };
+            return new Result<TodoList>() { Message = StringDataExtensions.NotFound<TodoList>(), ResultType = ResultType.NotFound };
         }
         else if (!vr.IsValid)
         {
-            return new Result<TodoList>() { Message = Strings.FormattedValidationErrors(vr.Errors), ResultType = ResultType.Invalid };
+            return new Result<TodoList>() { Message = vr.Errors.FormattedValidationErrors(), ResultType = ResultType.Invalid };
         }
         else if (list.Name != dto.Name)
         {
@@ -142,11 +142,11 @@ internal partial class TodoListDbContext
         ValidationResult vr = dto.Description.ValidateTodoDescription();
         if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
-            return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
+            return new Result<Todo>() { Message = StringDataExtensions.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
         else if (!vr.IsValid)
         {
-            return new Result<Todo>() { Message = Strings.FormattedValidationErrors(vr.Errors), ResultType = ResultType.Invalid };
+            return new Result<Todo>() { Message = vr.Errors.FormattedValidationErrors(), ResultType = ResultType.Invalid };
         }
         else
         {
@@ -163,7 +163,7 @@ internal partial class TodoListDbContext
     {
         if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
-            return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
+            return new Result<Todo>() { Message = StringDataExtensions.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
         else
         {
@@ -176,7 +176,7 @@ internal partial class TodoListDbContext
     {
         if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
-            return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
+            return new Result<Todo>() { Message = StringDataExtensions.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
         else
         {
@@ -189,7 +189,7 @@ internal partial class TodoListDbContext
     {
         if ((await GetTodoEntityAsync(id)) is not Todo todo)
         {
-            return new Result<Todo>() { Message = Strings.NotFound<Todo>(), ResultType = ResultType.NotFound };
+            return new Result<Todo>() { Message = StringDataExtensions.NotFound<Todo>(), ResultType = ResultType.NotFound };
         }
         else if (!TodoLists.Select(l => l.Id).Contains(dto.TodoListId))
         {
