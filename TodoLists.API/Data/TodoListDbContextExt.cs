@@ -193,7 +193,7 @@ internal partial class TodoListDbContext
         }
         else if (!TodoLists.Select(l => l.Id).Contains(dto.TodoListId))
         {
-            return new Result<Todo>() { Message = "Invalid list id.", ResultType = ResultType.Error };
+            return new Result<Todo>() { Message = Constants.Constants.INVALID_LIST_ID, ResultType = ResultType.Error };
         }
         else if (todo.TodoListId != dto.TodoListId)
         {
